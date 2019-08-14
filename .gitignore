@@ -1,3 +1,10 @@
+# for This Project
+## Ignore the FFmpeg sources.
+/src/*
+/make/*
+
+# for General
+## CMake
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -7,4 +14,15 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-/src/*
+
+## macOS
+.DS_Store
+
+## Windows
+Thumbs.db
+
+## Vim
+*.swp
+
+## Visual Studio Code
+*.vscode
