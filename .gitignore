@@ -2,6 +2,7 @@
 ## Ignore the FFmpeg sources.
 /src/*
 /make/*
+/gen/libavutil/ffversion.h
 
 # for General
 ## CMake
