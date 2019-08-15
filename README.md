@@ -1,23 +1,23 @@
-cmake-FFmpeg
+﻿cmake-FFmpeg
 =============
 
 The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake](https://cmake.org).
 
-# ?? Getting Started
-- ?? Install the following tools.
+# 📃 Getting Started
+- 🕐 Install the following tools.
     - [CMake](https://cmake.org/)
     - [Yasm](https://yasm.tortall.net)
     - [Git](https://git-scm.com)
-- ?? Clone && Change Directory
+- 🕑 Clone && Change Directory
     - `git clone https://github.com/cthirase/cmake-FFmpeg.git`
     - `cd cmake-FFmpeg`
-- ?? **[Linux/macOS only]** Grant execute permission.
+- 🕒 **[Linux/macOS only]** Grant execute permission.
     - `chmod +x build_all.sh`
-- ?? Build
+- 🕓 Build
     - **[Linux/macOS]** `./build_all.sh`
     - **[Windows]** `build_all.bat` **(UNDERDEVELOPMENT)**
 
-# ?? License
+# 📃 License
 - See [LICENSE](LICENSE).
 
 ## FFmpeg
@@ -29,5 +29,5 @@ CMake is distributed under the OSI-approved BSD 3-clause License.  Please see it
 - See [Licensing | CMake](https://cmake.org/licensing/)
 
 ## Yasm
-Yasm is a complete rewrite of the NASM assembler under the “new” BSD License (some portions are under other licenses, see COPYING for details).
+Yasm is a complete rewrite of the NASM assembler under the ânewâ BSD License (some portions are under other licenses, see COPYING for details).
 - See [Yasm](https://yasm.tortall.net)
