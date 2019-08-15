@@ -29,5 +29,5 @@ CMake is distributed under the OSI-approved BSD 3-clause License.  Please see it
 - See [Licensing | CMake](https://cmake.org/licensing/)
 
 ## Yasm
-Yasm is a complete rewrite of the NASM assembler under the ânewâ BSD License (some portions are under other licenses, see COPYING for details).
+Yasm is a complete rewrite of the NASM assembler under the “new” BSD License (some portions are under other licenses, see COPYING for details).
 - See [Yasm](https://yasm.tortall.net)
