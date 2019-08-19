@@ -21,53 +21,25 @@ configure_file(
 
 ###########################################################
 # Target Settings
+
 ## Common -------------------------------------------------
+set(SourceDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
+set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
+
 set(HeaderDirs ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND HeaderDirs
-    "${CMAKE_CURRENT_SOURCE_DIR}/gen"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${AutoGenDirRoot}"
+    "${SourceDirRoot}"
 )
 set(CommonCompileOptions)
 list(APPEND CommonCompileOptions
     "-DHAVE_AV_CONFIG_H"
 )
-list(APPEND CommonCompileOptions
-    "-std=c11"
-    "-Werror=partial-availability"
-    # "-fomit-frame-pointer"
-    # "-fPIC"
-    # "-pthread"
-    # "-g"
-    "-Wdeclaration-after-statement"
-    "-Wall"
-    "-Wdisabled-optimization"
-    "-Wpointer-arith"
-    "-Wredundant-decls"
-    "-Wwrite-strings"
-    "-Wtype-limits"
-    "-Wundef"
-    "-Wmissing-prototypes"
-    # "-Wno-pointer-to-int-cast"
-    "-Wstrict-prototypes"
-    "-Wempty-body"
-    # "-Wno-parentheses"
-    # "-Wno-switch"
-    # "-Wno-format-zero-length"
-    # "-Wno-pointer-sign"
-    # "-Wno-unused-const-variable"
-    # "-Wno-char-subscripts"
-    # "-O3"
-    # "-fno-math-errno"
-    # "-fno-signed-zeros"
-    # "-mstack-alignment=16"
-    # "-Qunused-arguments"
-    "-Werror=implicit-function-declaration"
-    "-Werror=missing-prototypes"
-    "-Werror=return-type"
-)
+list(APPEND CommonCompileOptions "@${MakeDirRoot}/gcc_common.opt")
 
 ## Common -------------------------------------------------
-include("libavutil.cmake")
+include("${MakeDirRoot}/libavutil.cmake")
 set(SubLibraries
     "avutil"
 )
@@ -75,8 +47,8 @@ set(SubLibraries
 ## FFmpeg -------------------------------------------------
 set(SourceFiles)
 list(APPEND SourceFiles
-    "src/fftools/ffmpeg.c"
-    "src/fftools/ffmpeg.h"
+    "${SourceDirRoot}/fftools/ffmpeg.c"
+    "${SourceDirRoot}/fftools/ffmpeg.h"
 )
 target_sources("ffmpeg" PRIVATE ${SourceFiles})
 target_include_directories("ffmpeg" PRIVATE ${HeaderDirs})
@@ -85,7 +57,7 @@ target_link_libraries("ffmpeg" ${SubLibraries})
 ## FFplay -------------------------------------------------
 set(SourceFiles)
 list(APPEND SourceFiles
-    "src/fftools/ffplay.c"
+    "${SourceDirRoot}/fftools/ffplay.c"
 )
 target_sources("ffplay" PRIVATE ${SourceFiles})
 target_include_directories("ffplay" PRIVATE ${HeaderDirs})
@@ -94,7 +66,7 @@ target_link_libraries("ffplay" ${SubLibraries})
 ## FFprobe -------------------------------------------------
 set(SourceFiles)
 list(APPEND SourceFiles
-    "src/fftools/ffprobe.c"
+    "${SourceDirRoot}/fftools/ffprobe.c"
 )
 target_sources("ffprobe" PRIVATE ${SourceFiles})
 target_include_directories("ffprobe" PRIVATE ${HeaderDirs})

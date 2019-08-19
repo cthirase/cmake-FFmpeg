@@ -11,7 +11,7 @@ add_library("avutil")
 # Target Settings
 
 ## avutil -------------------------------------------------
-set(SourceDir "src/libavutil")
+set(SourceDir "${SourceDirRoot}/libavutil")
 set(SourceFiles)
 list(APPEND SourceFiles
     "${SourceDir}/adler32.c"

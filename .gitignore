@@ -1,7 +1,7 @@
 # for This Project
 ## Ignore the FFmpeg sources.
 /src/*
-/make/*
+/make/gnumake/*
 /gen/libavutil/ffversion.h
 
 # for General
