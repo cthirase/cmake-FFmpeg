@@ -27,6 +27,44 @@ list(APPEND HeaderDirs
     "${CMAKE_CURRENT_SOURCE_DIR}/gen"
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
+set(CommonCompileOptions)
+list(APPEND CommonCompileOptions
+    "-DHAVE_AV_CONFIG_H"
+)
+list(APPEND CommonCompileOptions
+    "-std=c11"
+    "-Werror=partial-availability"
+    # "-fomit-frame-pointer"
+    # "-fPIC"
+    # "-pthread"
+    # "-g"
+    "-Wdeclaration-after-statement"
+    "-Wall"
+    "-Wdisabled-optimization"
+    "-Wpointer-arith"
+    "-Wredundant-decls"
+    "-Wwrite-strings"
+    "-Wtype-limits"
+    "-Wundef"
+    "-Wmissing-prototypes"
+    # "-Wno-pointer-to-int-cast"
+    "-Wstrict-prototypes"
+    "-Wempty-body"
+    # "-Wno-parentheses"
+    # "-Wno-switch"
+    # "-Wno-format-zero-length"
+    # "-Wno-pointer-sign"
+    # "-Wno-unused-const-variable"
+    # "-Wno-char-subscripts"
+    # "-O3"
+    # "-fno-math-errno"
+    # "-fno-signed-zeros"
+    # "-mstack-alignment=16"
+    # "-Qunused-arguments"
+    "-Werror=implicit-function-declaration"
+    "-Werror=missing-prototypes"
+    "-Werror=return-type"
+)
 
 ## Common -------------------------------------------------
 include("libavutil.cmake")
