@@ -17,6 +17,16 @@ The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake]
     - **[Linux/macOS]** `./build_all.sh`
     - **[Windows]** `build_all.bat` **(UNDERDEVELOPMENT)**
 
+# Information
+The `build_all` script download the following project sources.
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg)
+    - `git clone `
+- [LAME](http://lame.sourceforge.net/download.php)
+    - Linux
+        - `wget http://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz`
+    - macOS
+        - `curl -L http://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz -o lame-3.100.tar.gz`
+
 # 📃 License
 - See [LICENSE](LICENSE).
 
