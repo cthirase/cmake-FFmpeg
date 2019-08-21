@@ -19,5 +19,5 @@ fi
 
 ###########################################################
 # CMake
-cmake -S . -B make/gnumake || on_error
-cmake --build make/gnumake || on_error
+cmake -S . -B make/gnumake    || on_error
+cmake --build make/gnumake -j || on_error
