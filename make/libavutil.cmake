@@ -27,6 +27,7 @@ list(APPEND SourceFiles
     "${SourceDir}/avassert.h"
     "${SourceDir}/avsscanf.c"
     "${SourceDir}/avstring.h"
+    "${SourceDir}/avstring.c"
     "${SourceDir}/avutil.h"
     # "${SourceDir}/avutilres.rc"
     "${SourceDir}/base64.c"
