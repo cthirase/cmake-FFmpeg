@@ -10,7 +10,7 @@ add_library("avformat")
 ###########################################################
 # Target Settings
 
-## avutil -------------------------------------------------
+## avformat -----------------------------------------------
 set(SourceDir "${SourceDirRoot}/libavformat")
 set(SourceFiles)
 list(APPEND SourceFiles
