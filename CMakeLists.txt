@@ -41,7 +41,8 @@ list(APPEND CommonCompileOptions "@${MakeDirRoot}/gcc_common.opt")
 ## Common -------------------------------------------------
 include("${MakeDirRoot}/libavutil.cmake")
 include("${MakeDirRoot}/libavformat.cmake")
-set(SubLibraries "avutil" "avformat")
+include("${MakeDirRoot}/libavcodec.cmake")
+set(SubLibraries "avutil" "avformat" "avcodec")
 
 ## FFmpeg -------------------------------------------------
 set(SourceFiles)
