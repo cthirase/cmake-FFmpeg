@@ -44,6 +44,24 @@ include("${MakeDirRoot}/libavformat.cmake")
 include("${MakeDirRoot}/libavcodec.cmake")
 set(SubLibraries "avutil" "avformat" "avcodec")
 
+## Apple Frameworks ---------------------------------------
+set(AppleFrameworks
+    "-framework AppKit"
+    "-framework AudioToolbox"
+    "-framework AVFoundation"
+    "-framework CoreFoundation"
+    "-framework CoreGraphics"
+    "-framework CoreImage"
+    "-framework CoreMedia"
+    "-framework CoreServices"
+    "-framework CoreVideo"
+    "-framework Foundation"
+    "-framework OpenGL"
+    "-framework OpenGL"
+    "-framework Security"
+    "-framework VideoToolbox"
+)
+
 ## FFmpeg -------------------------------------------------
 set(SourceFiles)
 list(APPEND SourceFiles
@@ -53,6 +71,9 @@ list(APPEND SourceFiles
 target_sources("ffmpeg" PRIVATE ${SourceFiles})
 target_include_directories("ffmpeg" PRIVATE ${HeaderDirs})
 target_link_libraries("ffmpeg" ${SubLibraries})
+if(APPLE)
+target_link_libraries("ffmpeg" ${AppleFrameworks})
+endif()
 
 ## FFplay -------------------------------------------------
 set(SourceFiles)
@@ -62,6 +83,9 @@ list(APPEND SourceFiles
 target_sources("ffplay" PRIVATE ${SourceFiles})
 target_include_directories("ffplay" PRIVATE ${HeaderDirs})
 target_link_libraries("ffplay" ${SubLibraries})
+if(APPLE)
+target_link_libraries("ffplay" ${AppleFrameworks})
+endif()
 
 ## FFprobe -------------------------------------------------
 set(SourceFiles)
@@ -71,3 +95,6 @@ list(APPEND SourceFiles
 target_sources("ffprobe" PRIVATE ${SourceFiles})
 target_include_directories("ffprobe" PRIVATE ${HeaderDirs})
 target_link_libraries("ffprobe" ${SubLibraries})
+if(APPLE)
+target_link_libraries("ffprobe" ${AppleFrameworks})
+endif()
