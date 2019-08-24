@@ -39,10 +39,20 @@ list(APPEND CommonCompileOptions
 list(APPEND CommonCompileOptions "@${MakeDirRoot}/gcc_common.opt")
 
 ## Common -------------------------------------------------
-include("${MakeDirRoot}/libavutil.cmake")
-include("${MakeDirRoot}/libavformat.cmake")
 include("${MakeDirRoot}/libavcodec.cmake")
-set(SubLibraries "avutil" "avformat" "avcodec")
+include("${MakeDirRoot}/libavdevice.cmake")
+include("${MakeDirRoot}/libavfilter.cmake")
+include("${MakeDirRoot}/libavformat.cmake")
+include("${MakeDirRoot}/libavresample.cmake")
+include("${MakeDirRoot}/libavutil.cmake")
+include("${MakeDirRoot}/libpostproc.cmake")
+include("${MakeDirRoot}/libswresample.cmake")
+include("${MakeDirRoot}/libswscale.cmake")
+set(SubLibraries
+    "avcodec" "avdevice" "avfilter"
+    "avformat" "avresample" "avutil"
+    "postproc" "swresample" "swscale"
+)
 
 ## Apple Frameworks ---------------------------------------
 set(AppleFrameworks
