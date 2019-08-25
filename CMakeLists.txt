@@ -9,8 +9,10 @@ project(cmake-FFmpeg
 ###########################################################
 # Set Output Targets
 add_executable("ffmpeg")
-add_executable("ffplay")
 add_executable("ffprobe")
+if(FFPLAY)
+add_executable("ffplay")
+endif()
 
 ###########################################################
 # Options (Configure)
@@ -26,6 +28,7 @@ configure_file(
 set(SourceDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
 set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
+set(CMAKE_C_FLAGS "-std=c11")
 
 set(HeaderDirs ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND HeaderDirs
@@ -48,10 +51,12 @@ include("${MakeDirRoot}/libavutil.cmake")
 include("${MakeDirRoot}/libpostproc.cmake")
 include("${MakeDirRoot}/libswresample.cmake")
 include("${MakeDirRoot}/libswscale.cmake")
+include("${MakeDirRoot}/fftools.cmake")
 set(SubLibraries
     "avcodec" "avdevice" "avfilter"
     "avformat" "avresample" "avutil"
     "postproc" "swresample" "swscale"
+    "fftools"
 )
 
 ## Apple Frameworks ---------------------------------------
@@ -77,6 +82,12 @@ set(SourceFiles)
 list(APPEND SourceFiles
     "${SourceDirRoot}/fftools/ffmpeg.c"
     "${SourceDirRoot}/fftools/ffmpeg.h"
+    # ffmpeg_cuvid.c
+    # ffmpeg_filter.c
+    # ffmpeg_hw.c
+    # ffmpeg_opt.c
+    # ffmpeg_qsv.c
+    # ffmpeg_videotoolbox.c
 )
 target_sources("ffmpeg" PRIVATE ${SourceFiles})
 target_include_directories("ffmpeg" PRIVATE ${HeaderDirs})
@@ -86,6 +97,7 @@ target_link_libraries("ffmpeg" ${AppleFrameworks})
 endif()
 
 ## FFplay -------------------------------------------------
+if(FFPLAY)
 set(SourceFiles)
 list(APPEND SourceFiles
     "${SourceDirRoot}/fftools/ffplay.c"
@@ -96,6 +108,7 @@ target_link_libraries("ffplay" ${SubLibraries})
 if(APPLE)
 target_link_libraries("ffplay" ${AppleFrameworks})
 endif()
+endif() # FFPLAY
 
 ## FFprobe -------------------------------------------------
 set(SourceFiles)
