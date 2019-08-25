@@ -28,7 +28,9 @@ configure_file(
 set(SourceDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
 set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
-set(CMAKE_C_FLAGS "-std=c11")
+set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
+set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
+set(CMAKE_ASM_NASM_FLAGS "-Pconfig.asm")
 
 set(HeaderDirs ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND HeaderDirs
@@ -39,7 +41,6 @@ set(CommonCompileOptions)
 list(APPEND CommonCompileOptions
     "-DHAVE_AV_CONFIG_H"
 )
-list(APPEND CommonCompileOptions "@${MakeDirRoot}/gcc_common.opt")
 
 ## Common -------------------------------------------------
 include("${MakeDirRoot}/libavcodec.cmake")

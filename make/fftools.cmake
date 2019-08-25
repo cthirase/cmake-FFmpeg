@@ -17,38 +17,6 @@ list(APPEND SourceFiles
     "${SourceDir}/cmdutils.c"
     "${SourceDir}/cmdutils.h"
 )
-if(AARCH64)
-list(APPEND SourceFiles
-    "${SourceDir}/aarch64"
-)
-endif()
-if(ARM)
-list(APPEND SourceFiles
-    "${SourceDir}/arm"
-)
-endif()
-if(X86)
-list(APPEND SourceFiles
-    "${SourceDir}/x86"
-)
-endif()
-
-if(UNIX AND NOT APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(WIN32)
-list(APPEND SourceFiles
-)
-endif()
-if(APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(ANDROID)
-list(APPEND SourceFiles
-)
-endif()
 
 ###########################################################
 # Target Settings
