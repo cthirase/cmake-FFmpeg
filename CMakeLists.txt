@@ -30,7 +30,13 @@ set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
 set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
 set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
 set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
-set(CMAKE_ASM_NASM_FLAGS "-Pconfig.asm")
+set(CMAKE_ASM_NASM_FLAGS "-Pconfig.asm -DPIC")
+
+if(NOT USE_NASM)
+find_program (YASM_EXECUTABLE yasm)
+set(CMAKE_ASM_NASM_COMPILER ${YASM_EXECUTABLE})
+set(CMAKE_ASM_NASM_COMPILER_ID YASM)
+endif()
 
 set(HeaderDirs ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND HeaderDirs
