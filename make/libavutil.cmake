@@ -255,4 +255,5 @@ target_sources("avutil" PRIVATE ${SourceFiles})
 target_include_directories("avutil" PRIVATE ${HeaderDirs})
 target_compile_options("avutil" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )

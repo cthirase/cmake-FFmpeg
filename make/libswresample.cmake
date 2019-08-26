@@ -75,4 +75,5 @@ target_sources("swresample" PRIVATE ${SourceFiles})
 target_include_directories("swresample" PRIVATE ${HeaderDirs})
 target_compile_options("swresample" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )

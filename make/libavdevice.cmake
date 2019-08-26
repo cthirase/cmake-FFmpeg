@@ -120,4 +120,5 @@ target_sources("avdevice" PRIVATE ${SourceFiles})
 target_include_directories("avdevice" PRIVATE ${HeaderDirs})
 target_compile_options("avdevice" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )

@@ -9,7 +9,9 @@ project(cmake-FFmpeg
 ###########################################################
 # Set Output Targets
 add_executable("ffmpeg")
+if(FFPROBE)
 add_executable("ffprobe")
+endif()
 if(FFPLAY)
 add_executable("ffplay")
 endif()
@@ -28,9 +30,14 @@ configure_file(
 set(SourceDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
 set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
-set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
-set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
+set(GccCommonOptionsFile "@${MakeDirRoot}/gcc_common.opt")
+# set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
+# set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
 set(CMAKE_ASM_NASM_FLAGS "-Pconfig.asm -DPIC")
+# message(STATUS "CMAKE_OSX_SYSROOT: ${CMAKE_OSX_SYSROOT}")
+# set(CMAKE_OSX_SYSROOT "${CMAKE_OSX_SYSROOT}/")
+# message(STATUS "CMAKE_OSX_SYSROOT: ${CMAKE_OSX_SYSROOT}")
+#message(FATAL_ERROR "FINISHED")
 
 if(NOT USE_NASM)
 find_program (YASM_EXECUTABLE yasm)
@@ -67,6 +74,7 @@ set(SubLibraries
 )
 
 ## Apple Frameworks ---------------------------------------
+if(APPLE)
 set(AppleFrameworks
     "-framework AppKit"
     "-framework AudioToolbox"
@@ -83,6 +91,9 @@ set(AppleFrameworks
     "-framework Security"
     "-framework VideoToolbox"
 )
+set(CMAKE_FIND_FRAMEWORK LAST)
+set(CMAKE_FIND_APPBUNDLE LAST)
+endif()
 
 ## FFmpeg -------------------------------------------------
 set(SourceFiles)
@@ -96,11 +107,21 @@ list(APPEND SourceFiles
     # ffmpeg_qsv.c
     # ffmpeg_videotoolbox.c
 )
-target_sources("ffmpeg" PRIVATE ${SourceFiles})
+target_sources("ffmpeg" PRIVATE ${SourceFiles} )
 target_include_directories("ffmpeg" PRIVATE ${HeaderDirs})
 target_link_libraries("ffmpeg" ${SubLibraries})
+add_compile_options("ffmpeg" PRIVATE ${GccCommonOptionsFile})
+target_compile_features("ffmpeg" PRIVATE c_std_11 cxx_std_11)
+
+# set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
+# set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
+# set_property(TARGET "ffmpeg" PROPERTY C_STANDARD 11)
+# set_property(TARGET "ffmpeg" PROPERTY CXX_STANDARD 11)
+# target_compile_features("ffmpeg" PRIVATE cxx_std_11)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} @${MakeDirRoot}/gcc_common.opt")
 if(APPLE)
 target_link_libraries("ffmpeg" ${AppleFrameworks})
+set_target_properties("ffmpeg" PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks")
 endif()
 
 ## FFplay -------------------------------------------------
@@ -112,12 +133,15 @@ list(APPEND SourceFiles
 target_sources("ffplay" PRIVATE ${SourceFiles})
 target_include_directories("ffplay" PRIVATE ${HeaderDirs})
 target_link_libraries("ffplay" ${SubLibraries})
+target_compile_options("ffplay" PRIVATE "@${MakeDirRoot}/gcc_common.opt")
 if(APPLE)
 target_link_libraries("ffplay" ${AppleFrameworks})
+set_target_properties("ffplay" PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks")
 endif()
 endif() # FFPLAY
 
 ## FFprobe -------------------------------------------------
+if(FFPROBE)
 set(SourceFiles)
 list(APPEND SourceFiles
     "${SourceDirRoot}/fftools/ffprobe.c"
@@ -125,6 +149,10 @@ list(APPEND SourceFiles
 target_sources("ffprobe" PRIVATE ${SourceFiles})
 target_include_directories("ffprobe" PRIVATE ${HeaderDirs})
 target_link_libraries("ffprobe" ${SubLibraries})
+target_compile_options("ffprobe" PRIVATE "")
+add_compile_options()
 if(APPLE)
 target_link_libraries("ffprobe" ${AppleFrameworks})
+set_target_properties("ffprobe" PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks")
+endif()
 endif()

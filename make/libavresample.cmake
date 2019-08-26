@@ -73,4 +73,5 @@ target_sources("avresample" PRIVATE ${SourceFiles})
 target_include_directories("avresample" PRIVATE ${HeaderDirs})
 target_compile_options("avresample" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )

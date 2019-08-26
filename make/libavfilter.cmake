@@ -525,4 +525,5 @@ target_sources("avfilter" PRIVATE ${SourceFiles})
 target_include_directories("avfilter" PRIVATE ${HeaderDirs})
 target_compile_options("avfilter" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )

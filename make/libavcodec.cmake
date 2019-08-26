@@ -1762,4 +1762,5 @@ target_sources("avcodec" PRIVATE ${SourceFiles})
 target_include_directories("avcodec" PRIVATE ${HeaderDirs})
 target_compile_options("avcodec" PRIVATE
     ${CommonCompileOptions}
+    ${GccCommonOptionsFile}
 )
