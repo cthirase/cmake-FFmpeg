@@ -1,6 +1,7 @@
 ﻿cmake-FFmpeg
 =============
 
+This project is under-development.
 The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake](https://cmake.org).
 
 # 📃 Getting Started
