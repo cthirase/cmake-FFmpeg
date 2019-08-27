@@ -100,16 +100,22 @@ set(SourceFiles)
 list(APPEND SourceFiles
     "${SourceDirRoot}/fftools/ffmpeg.c"
     "${SourceDirRoot}/fftools/ffmpeg.h"
-    # ffmpeg_cuvid.c
-    # ffmpeg_filter.c
-    # ffmpeg_hw.c
-    # ffmpeg_opt.c
-    # ffmpeg_qsv.c
-    # ffmpeg_videotoolbox.c
+    # "${SourceDirRoot}/fftools/ffmpeg_cuvid.c"
+    "${SourceDirRoot}/fftools/ffmpeg_filter.c"
+    # "${SourceDirRoot}/fftools/ffmpeg_hw.c"
+    "${SourceDirRoot}/fftools/ffmpeg_opt.c"
+    # "${SourceDirRoot}/fftools/ffmpeg_qsv.c"
 )
+if(APPLE)
+list(APPEND SourceFiles
+    "${SourceDirRoot}/fftools/ffmpeg_videotoolbox.c"
+)
+endif()
 target_sources("ffmpeg" PRIVATE ${SourceFiles} )
 target_include_directories("ffmpeg" PRIVATE ${HeaderDirs})
-target_link_libraries("ffmpeg" ${SubLibraries})
+target_link_libraries("ffmpeg" ${SubLibraries}
+    "m" "bz2" "pthread" "m" "z" "iconv"
+)
 add_compile_options("ffmpeg" PRIVATE ${GccCommonOptionsFile})
 target_compile_features("ffmpeg" PRIVATE c_std_11 cxx_std_11)
 
@@ -121,7 +127,7 @@ target_compile_features("ffmpeg" PRIVATE c_std_11 cxx_std_11)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} @${MakeDirRoot}/gcc_common.opt")
 if(APPLE)
 target_link_libraries("ffmpeg" ${AppleFrameworks})
-set_target_properties("ffmpeg" PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks")
+set_target_properties("ffmpeg" PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks -ferror-limit=3")
 endif()
 
 ## FFplay -------------------------------------------------
