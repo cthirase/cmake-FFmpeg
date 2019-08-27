@@ -86,6 +86,9 @@ def main():
     op.add_argument('-v', '--verbose', action='store_true', default=False,
         help='Display more informations.'
     )
+    op.add_argument('-a', '--auto', type=str, default='',
+        help='Display more informations.'
+    )
     cparam = CmakeTaskParam()
     cparam.opt = op.parse_args()
     cparam.script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -95,14 +98,6 @@ def main():
     cparam.targets['Visual Studio 15 2017'] = 'pc2017'
     cparam.targets['Visual Studio 16 2019'] = 'pc2019'
     cparam.targets['Xcode'] = 'xcode'
-    cparam.generator_name = prompt('Select Generator: ', completer=WordCompleter(cparam.targets.keys()))
-    if cparam.generator_name not in cparam.targets:
-        print('The specified generator is not found.')
-        print(cparam.targets)
-        on_error()
-
-    cparam.make_dir_short = os.path.join('make', cparam.targets[cparam.generator_name])
-    cparam.make_dir = os.path.join(cparam.script_dir, cparam.make_dir_short)
 
     tasks = dict()
     tasks['all']               = all
@@ -110,14 +105,30 @@ def main():
     tasks['cmake gen & build'] = cmake_gen_and_build
     tasks['cmake gen']         = cmake_gen
     tasks['cmake build']       = cmake_build
-
-    task_name = prompt('Select Tasks: ', completer=WordCompleter(tasks.keys()))
-    if task_name in tasks:
-        tasks[task_name](cparam)
+    if 0 < len(cparam.opt.auto):
+        params = cparam.opt.auto.split('|')
+        cparam.generator_name = params[0]
+        task_name = params[1]
     else:
-        print('The specified task is not found.')
-        print(tasks)
-        on_error()
+        cparam.generator_name = prompt('Select Generator: ', completer=WordCompleter(cparam.targets.keys()))
+        if cparam.generator_name not in cparam.targets:
+            print('The specified generator is not found.')
+            print(cparam.targets)
+            on_error()
+
+        task_name = prompt('Select Tasks: ', completer=WordCompleter(tasks.keys()))
+        if task_name not in tasks:
+            print('The specified task is not found.')
+            print(tasks)
+            on_error()
+        
+        print('Hint!')
+        print('You can run with --auto "' + cparam.generator_name + '|' + task_name + '"')
+
+    cparam.make_dir_short = os.path.join('make', cparam.targets[cparam.generator_name])
+    cparam.make_dir = os.path.join(cparam.script_dir, cparam.make_dir_short)
+    tasks[task_name](cparam)
+
 
 if __name__=='__main__':
     try:
