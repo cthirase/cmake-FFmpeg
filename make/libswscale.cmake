@@ -76,6 +76,7 @@ endif()
 target_sources("swscale" PRIVATE ${SourceFiles})
 target_include_directories("swscale" PRIVATE ${HeaderDirs})
 target_compile_options("swscale" PRIVATE
-    ${CommonCompileOptions}
-    ${GccCommonOptionsFile}
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )

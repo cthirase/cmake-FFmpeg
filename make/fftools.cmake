@@ -23,5 +23,7 @@ list(APPEND SourceFiles
 target_sources("fftools" PRIVATE ${SourceFiles})
 target_include_directories("fftools" PRIVATE ${HeaderDirs})
 target_compile_options("fftools" PRIVATE
-    ${CommonCompileOptions}
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )

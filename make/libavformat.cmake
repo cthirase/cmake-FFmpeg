@@ -636,6 +636,7 @@ endif()
 target_sources("avformat" PRIVATE ${SourceFiles})
 target_include_directories("avformat" PRIVATE ${HeaderDirs})
 target_compile_options("avformat" PRIVATE
-    ${CommonCompileOptions}
-    ${GccCommonOptionsFile}
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )

@@ -1,4 +1,3 @@
--fmax-errors=3
 -Werror=partial-availability
 // -fomit-frame-pointer
 // -fPIC

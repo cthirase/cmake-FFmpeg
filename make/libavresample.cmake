@@ -72,6 +72,7 @@ endif()
 target_sources("avresample" PRIVATE ${SourceFiles})
 target_include_directories("avresample" PRIVATE ${HeaderDirs})
 target_compile_options("avresample" PRIVATE
-    ${CommonCompileOptions}
-    ${GccCommonOptionsFile}
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )

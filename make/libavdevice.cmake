@@ -119,6 +119,7 @@ endif()
 target_sources("avdevice" PRIVATE ${SourceFiles})
 target_include_directories("avdevice" PRIVATE ${HeaderDirs})
 target_compile_options("avdevice" PRIVATE
-    ${CommonCompileOptions}
-    ${GccCommonOptionsFile}
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )

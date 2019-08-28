@@ -1761,7 +1761,7 @@ endif()
 target_sources("avcodec" PRIVATE ${SourceFiles})
 target_include_directories("avcodec" PRIVATE ${HeaderDirs})
 target_compile_options("avcodec" PRIVATE
-    $<$<COMPILE_LANGUAGE:ASM_NASM>:-DPREFIX>
-    $<$<COMPILE_LANGUAGE:C>:${CommonCompileOptions} ${GccCommonOptionsFile}>
-    $<$<COMPILE_LANGUAGE:CXX>:${CommonCompileOptions} ${GccCommonOptionsFile}>
+    $<$<COMPILE_LANGUAGE:ASM_NASM>:${CompileOptAsm}>
+    $<$<COMPILE_LANGUAGE:C>:${CompileOptC}>
+    $<$<COMPILE_LANGUAGE:CXX>:${CompileOptCxx}>
 )
