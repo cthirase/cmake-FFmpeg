@@ -36,36 +36,16 @@ list(APPEND SourceFiles
     "${SourceDir}/swresampleres.rc"
     "${SourceDir}/version.h"
 )
-if(AARCH64)
-list(APPEND SourceFiles
-    "${SourceDir}/aarch64"
-)
-endif()
-if(ARM)
-list(APPEND SourceFiles
-    "${SourceDir}/arm"
-)
-endif()
-if(X86)
-list(APPEND SourceFiles
-    "${SourceDir}/x86"
-)
-endif()
 
-if(UNIX AND NOT APPLE)
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
 list(APPEND SourceFiles
-)
-endif()
-if(WIN32)
-list(APPEND SourceFiles
-)
-endif()
-if(APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(ANDROID)
-list(APPEND SourceFiles
+    "${SourceDir}/x86/audio_convert.asm"
+    "${SourceDir}/x86/audio_convert_init.c"
+    "${SourceDir}/x86/rematrix.asm"
+    "${SourceDir}/x86/rematrix_init.c"
+    "${SourceDir}/x86/resample.asm"
+    "${SourceDir}/x86/resample_init.c"
+    "${SourceDir}/x86/w64xmmtest.c"
 )
 endif()
 

@@ -34,36 +34,17 @@ list(APPEND SourceFiles
     "${SourceDir}/utils.c"
     "${SourceDir}/version.h"
 )
-if(AARCH64)
-list(APPEND SourceFiles
-    "${SourceDir}/aarch64"
-)
-endif()
-if(ARM)
-list(APPEND SourceFiles
-    "${SourceDir}/arm"
-)
-endif()
-if(X86)
-list(APPEND SourceFiles
-    "${SourceDir}/x86"
-)
-endif()
 
-if(UNIX AND NOT APPLE)
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
 list(APPEND SourceFiles
-)
-endif()
-if(WIN32)
-list(APPEND SourceFiles
-)
-endif()
-if(APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(ANDROID)
-list(APPEND SourceFiles
+    "${SourceDir}/x86/audio_convert.asm"
+    "${SourceDir}/x86/audio_convert_init.c"
+    "${SourceDir}/x86/audio_mix.asm"
+    "${SourceDir}/x86/audio_mix_init.c"
+    "${SourceDir}/x86/dither.asm"
+    "${SourceDir}/x86/dither_init.c"
+    "${SourceDir}/x86/util.asm"
+    "${SourceDir}/x86/w64xmmtest.c"
 )
 endif()
 

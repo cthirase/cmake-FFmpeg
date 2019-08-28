@@ -38,38 +38,24 @@ list(APPEND SourceFiles
     "${SourceDir}/vscale.c"
     "${SourceDir}/yuv2rgb.c"
 )
-if(AARCH64)
+
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
 list(APPEND SourceFiles
-    "${SourceDir}/aarch64"
-)
-endif()
-if(ARM)
-list(APPEND SourceFiles
-    "${SourceDir}/arm"
-)
-endif()
-if(X86)
-list(APPEND SourceFiles
-    "${SourceDir}/x86"
+    "${SourceDir}/x86/hscale_fast_bilinear_simd.c"
+    "${SourceDir}/x86/input.asm"
+    "${SourceDir}/x86/output.asm"
+    "${SourceDir}/x86/rgb2rgb.c"
+    # "${SourceDir}/x86/rgb2rgb_template.c"
+    "${SourceDir}/x86/rgb_2_rgb.asm"
+    "${SourceDir}/x86/scale.asm"
+    "${SourceDir}/x86/swscale.c"
+    # "${SourceDir}/x86/swscale_template.c"
+    "${SourceDir}/x86/w64xmmtest.c"
+    "${SourceDir}/x86/yuv2rgb.c"
+    # "${SourceDir}/x86/yuv2rgb_template.c"
 )
 endif()
 
-if(UNIX AND NOT APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(WIN32)
-list(APPEND SourceFiles
-)
-endif()
-if(APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(ANDROID)
-list(APPEND SourceFiles
-)
-endif()
 
 ###########################################################
 # Target Settings

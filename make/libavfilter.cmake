@@ -139,7 +139,6 @@ list(APPEND SourceFiles
     # "${SourceDir}/colorspacedsp_yuv2yuv_template.c"
     "${SourceDir}/convolution.h"
     "${SourceDir}/deshake.h"
-    "${SourceDir}/dnn"
     "${SourceDir}/dnn_interface.h"
     "${SourceDir}/drawutils.c"
     "${SourceDir}/drawutils.h"
@@ -426,10 +425,77 @@ list(APPEND SourceFiles
     "${SourceDir}/vsrc_testsrc.c"
     "${SourceDir}/w3fdif.h"
     "${SourceDir}/window_func.h"
-    "${SourceDir}/x86"
     "${SourceDir}/yadif.h"
     "${SourceDir}/yadif_common.c"
 )
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+list(APPEND SourceFiles
+    "${SourceDir}/x86/af_afir.asm"
+    "${SourceDir}/x86/af_afir_init.c"
+    "${SourceDir}/x86/af_anlmdn.asm"
+    "${SourceDir}/x86/af_anlmdn_init.c"
+    "${SourceDir}/x86/af_volume.asm"
+    "${SourceDir}/x86/af_volume_init.c"
+    "${SourceDir}/x86/avf_showcqt.asm"
+    "${SourceDir}/x86/avf_showcqt_init.c"
+    "${SourceDir}/x86/colorspacedsp.asm"
+    "${SourceDir}/x86/colorspacedsp_init.c"
+    "${SourceDir}/x86/scene_sad.asm"
+    "${SourceDir}/x86/scene_sad_init.c"
+    "${SourceDir}/x86/vf_blend.asm"
+    "${SourceDir}/x86/vf_blend_init.c"
+    "${SourceDir}/x86/vf_bwdif.asm"
+    "${SourceDir}/x86/vf_bwdif_init.c"
+    "${SourceDir}/x86/vf_convolution.asm"
+    "${SourceDir}/x86/vf_convolution_init.c"
+    "${SourceDir}/x86/vf_eq.c"
+    "${SourceDir}/x86/vf_framerate.asm"
+    "${SourceDir}/x86/vf_framerate_init.c"
+    "${SourceDir}/x86/vf_fspp.asm"
+    "${SourceDir}/x86/vf_fspp_init.c"
+    "${SourceDir}/x86/vf_gblur.asm"
+    "${SourceDir}/x86/vf_gblur_init.c"
+    "${SourceDir}/x86/vf_gradfun.asm"
+    "${SourceDir}/x86/vf_gradfun_init.c"
+    "${SourceDir}/x86/vf_hflip.asm"
+    "${SourceDir}/x86/vf_hflip_init.c"
+    "${SourceDir}/x86/vf_hqdn3d.asm"
+    "${SourceDir}/x86/vf_hqdn3d_init.c"
+    "${SourceDir}/x86/vf_idet.asm"
+    "${SourceDir}/x86/vf_idet_init.c"
+    "${SourceDir}/x86/vf_interlace.asm"
+    "${SourceDir}/x86/vf_limiter.asm"
+    "${SourceDir}/x86/vf_limiter_init.c"
+    "${SourceDir}/x86/vf_maskedmerge.asm"
+    "${SourceDir}/x86/vf_maskedmerge_init.c"
+    "${SourceDir}/x86/vf_noise.c"
+    "${SourceDir}/x86/vf_overlay.asm"
+    "${SourceDir}/x86/vf_overlay_init.c"
+    "${SourceDir}/x86/vf_pp7.asm"
+    "${SourceDir}/x86/vf_pp7_init.c"
+    "${SourceDir}/x86/vf_psnr.asm"
+    "${SourceDir}/x86/vf_psnr_init.c"
+    "${SourceDir}/x86/vf_pullup.asm"
+    "${SourceDir}/x86/vf_pullup_init.c"
+    "${SourceDir}/x86/vf_removegrain.asm"
+    "${SourceDir}/x86/vf_removegrain_init.c"
+    "${SourceDir}/x86/vf_spp.c"
+    "${SourceDir}/x86/vf_ssim.asm"
+    "${SourceDir}/x86/vf_ssim_init.c"
+    "${SourceDir}/x86/vf_stereo3d.asm"
+    "${SourceDir}/x86/vf_stereo3d_init.c"
+    "${SourceDir}/x86/vf_threshold.asm"
+    "${SourceDir}/x86/vf_threshold_init.c"
+    "${SourceDir}/x86/vf_tinterlace_init.c"
+    "${SourceDir}/x86/vf_w3fdif.asm"
+    "${SourceDir}/x86/vf_w3fdif_init.c"
+    "${SourceDir}/x86/vf_yadif.asm"
+    "${SourceDir}/x86/vf_yadif_init.c"
+    "${SourceDir}/x86/yadif-10.asm"
+    "${SourceDir}/x86/yadif-16.asm"
+)
+endif()
+
 if(AARCH64)
 list(APPEND SourceFiles
     "${SourceDir}/aarch64/vf_nlmeans_init.c"
@@ -437,22 +503,18 @@ list(APPEND SourceFiles
 )
 endif()
 
-if(UNIX AND NOT APPLE)
+if(DNN)
 list(APPEND SourceFiles
+    "${SourceDir}/dnn/dnn_backend_native.c"
+    "${SourceDir}/dnn/dnn_backend_native.h"
+    "${SourceDir}/dnn/dnn_backend_native_layer_pad.c"
+    "${SourceDir}/dnn/dnn_backend_native_layer_pad.h"
+    "${SourceDir}/dnn/dnn_backend_tf.c"
+    "${SourceDir}/dnn/dnn_backend_tf.h"
+    "${SourceDir}/dnn/dnn_interface.c"
 )
 endif()
-if(WIN32)
-list(APPEND SourceFiles
-)
-endif()
-if(APPLE)
-list(APPEND SourceFiles
-)
-endif()
-if(ANDROID)
-list(APPEND SourceFiles
-)
-endif()
+
 if(INTEL_QSV)
 list(APPEND SourceFiles
     "${SourceDir}/qsvvpp.c"

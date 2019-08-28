@@ -195,7 +195,34 @@ list(APPEND SourceFiles
     "${SourceDir}/xtea.c"
     "${SourceDir}/xtea.h"
 )
-
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+list(APPEND SourceFiles
+    "${SourceDir}/x86/asm.h"
+    "${SourceDir}/x86/bswap.h"
+    "${SourceDir}/x86/cpu.c"
+    "${SourceDir}/x86/cpu.h"
+    "${SourceDir}/x86/cpuid.asm"
+    "${SourceDir}/x86/emms.asm"
+    "${SourceDir}/x86/emms.h"
+    "${SourceDir}/x86/fixed_dsp.asm"
+    "${SourceDir}/x86/fixed_dsp_init.c"
+    "${SourceDir}/x86/float_dsp.asm"
+    "${SourceDir}/x86/float_dsp_init.c"
+    "${SourceDir}/x86/imgutils.asm"
+    "${SourceDir}/x86/imgutils_init.c"
+    "${SourceDir}/x86/intmath.h"
+    "${SourceDir}/x86/intreadwrite.h"
+    "${SourceDir}/x86/lls.asm"
+    "${SourceDir}/x86/lls_init.c"
+    "${SourceDir}/x86/pixelutils.asm"
+    "${SourceDir}/x86/pixelutils.h"
+    "${SourceDir}/x86/pixelutils_init.c"
+    "${SourceDir}/x86/timer.h"
+    "${SourceDir}/x86/w64xmmtest.h"
+    "${SourceDir}/x86/x86inc.asm"
+    "${SourceDir}/x86/x86util.asm"
+)
+endif()
 if(CUDA)
 list(APPEND SourceFiles
     "${SourceDir}/hwcontext_cuda.c"
