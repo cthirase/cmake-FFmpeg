@@ -140,6 +140,11 @@ list(APPEND SourceFiles
     "${SourceDir}/convolution.h"
     "${SourceDir}/deshake.h"
     "${SourceDir}/dnn_interface.h"
+    "${SourceDir}/dnn/dnn_backend_native.c"
+    "${SourceDir}/dnn/dnn_backend_native.h"
+    "${SourceDir}/dnn/dnn_backend_native_layer_pad.c"
+    "${SourceDir}/dnn/dnn_backend_native_layer_pad.h"
+    "${SourceDir}/dnn/dnn_interface.c"
     "${SourceDir}/drawutils.c"
     "${SourceDir}/drawutils.h"
     "${SourceDir}/ebur128.c"
@@ -503,15 +508,10 @@ list(APPEND SourceFiles
 )
 endif()
 
-if(DNN)
+if(DNN_TENSORFLOW)
 list(APPEND SourceFiles
-    "${SourceDir}/dnn/dnn_backend_native.c"
-    "${SourceDir}/dnn/dnn_backend_native.h"
-    "${SourceDir}/dnn/dnn_backend_native_layer_pad.c"
-    "${SourceDir}/dnn/dnn_backend_native_layer_pad.h"
     "${SourceDir}/dnn/dnn_backend_tf.c"
     "${SourceDir}/dnn/dnn_backend_tf.h"
-    "${SourceDir}/dnn/dnn_interface.c"
 )
 endif()
 

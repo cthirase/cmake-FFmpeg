@@ -514,7 +514,7 @@ list(APPEND SourceFiles
     # "${SourceDir}/tls_mbedtls.c"
     # "${SourceDir}/tls_openssl.c"
     # "${SourceDir}/tls_schannel.c"
-    # "${SourceDir}/tls_securetransport.c"
+    "${SourceDir}/tls_securetransport.c"
     "${SourceDir}/tmv.c"
     "${SourceDir}/tta.c"
     "${SourceDir}/ttaenc.c"

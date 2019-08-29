@@ -51,12 +51,10 @@ list(APPEND HeaderDirs
 )
 set(CompileOptC)
 list(APPEND CompileOptC
-    "-DHAVE_AV_CONFIG_H"
     "@${MakeDirRoot}/gcc_common.opt"
 )
 set(CompileOptCxx)
 list(APPEND CompileOptCxx
-    "-DHAVE_AV_CONFIG_H"
     "@${MakeDirRoot}/gcc_common.opt"
 )
 set(CompileOptAsm)
@@ -113,7 +111,7 @@ list(APPEND SourceFiles
     "${SourceDirRoot}/fftools/ffmpeg.h"
     # "${SourceDirRoot}/fftools/ffmpeg_cuvid.c"
     "${SourceDirRoot}/fftools/ffmpeg_filter.c"
-    # "${SourceDirRoot}/fftools/ffmpeg_hw.c"
+    "${SourceDirRoot}/fftools/ffmpeg_hw.c"
     "${SourceDirRoot}/fftools/ffmpeg_opt.c"
     # "${SourceDirRoot}/fftools/ffmpeg_qsv.c"
 )
