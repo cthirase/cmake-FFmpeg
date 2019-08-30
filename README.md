@@ -1,8 +1,17 @@
 ﻿cmake-FFmpeg
 =============
 
-This project is under-development.
 The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake](https://cmake.org).
+
+**This project is under-development.**
+- [x] Make it buildable with CMake.
+  - However, there are the following restrictions.
+    - Only one configuration.
+    - Only one platform. (macOS)
+- [ ] Support some configurations via CMake `include` command.
+- [ ] Support some libraries.
+- [ ] Support Linux/Windows.
+
 
 # 📃 Getting Started
 - 🕐 Install the following tools.
