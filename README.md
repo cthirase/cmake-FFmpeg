@@ -10,6 +10,9 @@ The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake]
     - Only one platform. (macOS)
 - [ ] Support some configurations via CMake `include` command.
 - [ ] Support some libraries.
+  - [ ] libx264
+  - [ ] libx265
+  - [ ] libvpx
 - [ ] Support Linux/Windows.
 
 
