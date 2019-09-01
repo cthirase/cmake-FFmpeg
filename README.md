@@ -9,6 +9,10 @@ The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake]
     - Only one configuration.
     - Only one platform. (macOS)
 - [ ] Support some configurations via CMake `include` command.
+  - [x] CC_IDENT
+  - [x] FFMPEG_CONFIGURATION
+  - [x] CONFIG_THIS_YEAR
+  - [ ] (Other)
 - [ ] Support some libraries.
   - [ ] libx264
   - [ ] libx265
@@ -21,14 +25,15 @@ The goal is to build the [FFmpeg](https://github.com/FFmpeg/FFmpeg) with [CMake]
     - [CMake](https://cmake.org/)
     - [Yasm](https://yasm.tortall.net)
     - [Git](https://git-scm.com)
+    - [Python 3](https://www.python.org)
 - 🕑 Clone && Change Directory
     - `git clone https://github.com/cthirase/cmake-FFmpeg.git`
     - `cd cmake-FFmpeg`
 - 🕒 **[Linux/macOS only]** Grant execute permission.
     - `chmod +x build_all.sh`
 - 🕓 Build
-    - **[Linux/macOS]** `./build_all.sh`
-    - **[Windows]** `build_all.bat` **(UNDERDEVELOPMENT)**
+    - **[Linux/macOS]** `python3 build_all.py`
+    - **[Windows]** `py build_all.bat` **(UNDERDEVELOPMENT)**
 
 # Information
 The `build_all` script download the following project sources.
