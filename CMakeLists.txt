@@ -18,18 +18,29 @@ endif()
 
 ###########################################################
 # Options (Configure)
-set(FFMPEG_VERSION 4.2)
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/gen/libavutil/ffversion.h.in"
-    "${CMAKE_CURRENT_SOURCE_DIR}/gen/libavutil/ffversion.h" @ONLY)
+set(FFMPEG_CONFIGURATION "${PROJECT_NAME}")
+string(TIMESTAMP CMAKE_DATE_YEAR   "%Y" UTC)
+string(TIMESTAMP CMAKE_DATE_MONTH  "%m" UTC)
+string(TIMESTAMP CMAKE_DATE_DAY    "%d" UTC)
+string(TIMESTAMP CMAKE_DATE_HOUR   "%H" UTC)
+string(TIMESTAMP CMAKE_DATE_MINUTE "%M" UTC)
+string(TIMESTAMP CMAKE_DATE_SECOND "%S" UTC)
+string(TIMESTAMP CMAKE_DATE_ISO8601     "%Y%m%d")
+string(TIMESTAMP CMAKE_DATETIME_ISO8601 "%Y%m%dT%H%M%S")
+
+###########################################################
+# Generate Files
+configure_file("gen/config.h.in"   "${CMAKE_CURRENT_BINARY_DIR}/gen/config.h"   @ONLY)
+configure_file("gen/config.asm.in" "${CMAKE_CURRENT_BINARY_DIR}/gen/config.asm" @ONLY)
 
 ###########################################################
 # Target Settings
 
 ## Common -------------------------------------------------
-set(SourceDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(SourceDirRoot  "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(AutoGenDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/gen")
-set(MakeDirRoot "${CMAKE_CURRENT_SOURCE_DIR}/make")
+set(MakeDirRoot    "${CMAKE_CURRENT_SOURCE_DIR}/make")
+set(GenDirRoot     "${CMAKE_CURRENT_BINARY_DIR}/gen/")
 # set(CMAKE_C_FLAGS "-std=c11 @${MakeDirRoot}/gcc_common.opt")
 # set(CMAKE_CXX_FLAGS "-std=c++11 @${MakeDirRoot}/gcc_common.opt")
 # set(CMAKE_ASM_NASM_FLAGS "")
@@ -48,6 +59,7 @@ set(HeaderDirs ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND HeaderDirs
     "${AutoGenDirRoot}"
     "${SourceDirRoot}"
+    "${GenDirRoot}"
 )
 set(CompileOptC)
 list(APPEND CompileOptC
