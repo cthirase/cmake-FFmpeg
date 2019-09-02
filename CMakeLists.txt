@@ -19,6 +19,7 @@ endif()
 ###########################################################
 # Options (Configure)
 set(FFMPEG_CONFIGURATION "${PROJECT_NAME}")
+set(FFMPEG_LICENSE "LGPL version 2.1 or later")
 string(TIMESTAMP CMAKE_DATE_YEAR   "%Y" UTC)
 string(TIMESTAMP CMAKE_DATE_MONTH  "%m" UTC)
 string(TIMESTAMP CMAKE_DATE_DAY    "%d" UTC)
@@ -27,6 +28,37 @@ string(TIMESTAMP CMAKE_DATE_MINUTE "%M" UTC)
 string(TIMESTAMP CMAKE_DATE_SECOND "%S" UTC)
 string(TIMESTAMP CMAKE_DATE_ISO8601     "%Y%m%d")
 string(TIMESTAMP CMAKE_DATETIME_ISO8601 "%Y%m%dT%H%M%S")
+
+set(CONFIGURE_ENABLE_GPL     0)
+set(CONFIGURE_ENABLE_GPLV3   0)
+set(CONFIGURE_ENABLE_LIBX264 0)
+
+###########################################################
+# Check Configure
+set(CONFIGURE_EXTERNAL_LIBRARY_GPL_LIST
+    # "CONFIGURE_ENABLE_AVISYNTH"
+    # "CONFIGURE_ENABLE_FREI0R"
+    # "CONFIGURE_ENABLE_LIBCDIO"
+    # "CONFIGURE_ENABLE_LIBDAVS2"
+    # "CONFIGURE_ENABLE_LIBRUBBERBAND"
+    # "CONFIGURE_ENABLE_LIBVIDSTAB"
+    "CONFIGURE_ENABLE_LIBX264"
+    # "CONFIGURE_ENABLE_LIBX265"
+    # "CONFIGURE_ENABLE_LIBXAVS"
+    # "CONFIGURE_ENABLE_LIBXAVS2"
+    # "CONFIGURE_ENABLE_LIBXVID"
+)
+foreach(lib ${CONFIGURE_EXTERNAL_LIBRARY_GPL_LIST})
+    if(${${lib}} EQUAL 1)
+        if(${CONFIGURE_ENABLE_GPL} EQUAL 0)
+            message(FATAL_ERROR "${lib} requires GPL")
+        endif()
+    endif()
+endforeach()
+
+if(${CONFIGURE_ENABLE_GPL} EQUAL 1)
+set(FFMPEG_LICENSE "GPL version 2 or later")
+endif()
 
 ###########################################################
 # Generate Files
