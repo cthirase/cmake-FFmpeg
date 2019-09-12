@@ -1,7 +1,9 @@
 #!/bin/python3
+import argparse
 import os
 import shutil
 import subprocess
+import sys
 
 def exist(cmd: str):
     return True if shutil.which(cmd) is not None else True
@@ -14,6 +16,8 @@ def exec(cmd: str, *args):
     # print(cmd)
     # print(*args)
 
+# make sure we are running under a compatible shell
+# try to make this part work with most shells
 def try_exec(cmd: str, *args):
     print('Trying shell ' + cmd)
     if exist(cmd):
@@ -23,215 +27,164 @@ def log(*args):
     print(args)
     # echo "$@" >> $logfile
 
-if __name__=='__main__':
-    print('''FFmpeg configure script
+def print_title():
+    print('FFmpeg configure script\n'
+    '\n'
+    ' Copyright (c) 2000-2002 Fabrice Bellard \n'
+    ' Copyright (c) 2005-2008 Diego Biurrun \n'
+    ' Copyright (c) 2005-2008 Mans Rullgard\n')
 
-Copyright (c) 2000-2002 Fabrice Bellard
-Copyright (c) 2005-2008 Diego Biurrun
-Copyright (c) 2005-2008 Mans Rullgard
+if __name__=='__main__':
+    print_title()
+    if os.path.isdir('/usr/xpg4/bin'):
+        env = os.environ
+        if 'PATH' in env:
+            env['PATH'] = '/usr/xpg4/bin:' + env['PATH']
+        else:
+            env['PATH'] = '/usr/xpg4/bin'
+
+    parser = argparse.ArgumentParser(
+                prog='ff_configure.py',
+                description='[defaults in brackets after descriptions]',
+                usage='ff_configure.py [options]',
+                epilog='NOTE: Object files are built at the place where configure is launched.',
+                add_help=False)
+    group_help = parser.add_argument_group(title='Help options')
+    group_help.add_argument('-h', '--help'    , action='store_true', help='print this message')
+    group_help.add_argument('-q', '--quiet'   , action='store_true', help='Suppress showing informative output')
+    group_help.add_argument('--list-decoders' , action='store_true', help='show all available decoders')
+    group_help.add_argument('--list-encoders' , action='store_true', help='show all available encoders')
+    group_help.add_argument('--list-hwaccels' , action='store_true', help='show all available hardware accelerators')
+    group_help.add_argument('--list-demuxers' , action='store_true', help='show all available demuxers')
+    group_help.add_argument('--list-muxers'   , action='store_true', help='show all available muxers')
+    group_help.add_argument('--list-parsers'  , action='store_true', help='show all available parsers')
+    group_help.add_argument('--list-protocols', action='store_true', help='show all available protocols')
+    group_help.add_argument('--list-bsfs'     , action='store_true', help='show all available bitstream filters')
+    group_help.add_argument('--list-indevs'   , action='store_true', help='show all available input devices')
+    group_help.add_argument('--list-outdevs'  , action='store_true', help='show all available output devices')
+    group_help.add_argument('--list-filters'  , action='store_true', help='show all available filters')
+
+    group_std = parser.add_argument_group(title='Standard options')
+    group_std.add_argument('--logfile'          , action='store'     , help='log tests and output to FILE [ffbuild/config.log]', metavar='FILE', type=argparse.FileType('w'))
+    group_std.add_argument('--disable-logging'  , action='store_true', help='do not log configure debug information')
+    group_std.add_argument('--fatal-warnings'   , action='store_true', help='fail if any configure warning is generated')
+    group_std.add_argument('--prefix'           , action='store'     , help='install in PREFIX [$prefix_default]', metavar='PREFIX')
+    group_std.add_argument('--bindir'           , action='store'     , help='install binaries in DIR [PREFIX/bin]', metavar='DIR')
+    group_std.add_argument('--datadir'          , action='store'     , help='install data files in DIR [PREFIX/share/ffmpeg]', metavar='DIR')
+    group_std.add_argument('--docdir'           , action='store'     , help='install documentation in DIR [PREFIX/share/doc/ffmpeg]', metavar='DIR')
+    group_std.add_argument('--libdir'           , action='store'     , help='install libs in DIR [PREFIX/lib]', metavar='DIR')
+    group_std.add_argument('--shlibdir'         , action='store'     , help='install shared libs in DIR [LIBDIR]', metavar='DIR')
+    group_std.add_argument('--incdir'           , action='store'     , help='install includes in DIR [PREFIX/include]', metavar='DIR')
+    group_std.add_argument('--mandir'           , action='store'     , help='install man page in DIR [PREFIX/share/man]', metavar='DIR')
+    group_std.add_argument('--pkgconfigdir'     , action='store'     , help='install pkg-config files in DIR [LIBDIR/pkgconfig]', metavar='DIR')
+    group_std.add_argument('--enable-rpath'     , action='store_true', help='use rpath to allow installing libraries in paths\nnot part of the dynamic linker search path\nuse rpath when linking programs (USE WITH CARE)')
+    group_std.add_argument('--install-name-dir' , action='store'     , help='Darwin directory name for installed targets', metavar='DIR')
+
+    group_lic = parser.add_argument_group(title='Licensing options')
+    group_lic.add_argument('--enable-gpl'     , action='store_true', help='allow use of GPL code, the resulting libs and binaries will be under GPL [no]')
+    group_lic.add_argument('--enable-version3', action='store_true', help='upgrade (L)GPL to version 3 [no]')
+    group_lic.add_argument('--enable-nonfree' , action='store_true', help='allow use of nonfree code, the resulting libs and binaries will be unredistributable [no]')
+
+    group_cfg = parser.add_argument_group(title='Configuration options')
+    group_cfg.add_argument('--disable-static'           , action='store_true', help='do not build static libraries [no]')
+    group_cfg.add_argument('--enable-shared'            , action='store_true', help='build shared libraries [no]')
+    group_cfg.add_argument('--enable-small'             , action='store_true', help='optimize for size instead of speed')
+    group_cfg.add_argument('--disable-runtime-cpudetect', action='store_true', help='disable detecting CPU capabilities at runtime (smaller binary)')
+    group_cfg.add_argument('--enable-gray'              , action='store_true', help='enable full grayscale support (slower color)')
+    group_cfg.add_argument('--disable-swscale-alpha'    , action='store_true', help='disable alpha channel support in swscale')
+    group_cfg.add_argument('--disable-all'              , action='store_true', help='disable building components, libraries and programs')
+    group_cfg.add_argument('--disable-autodetect'       , action='store_true', help='disable automatically detected external libraries [no]')
+
+    group_prog = parser.add_argument_group(title='Program options')
+    group_prog.add_argument('--disable-programs', action='store_true', help='do not build command line programs')
+    group_prog.add_argument('--disable-ffmpeg'  , action='store_true', help='disable ffmpeg build')
+    group_prog.add_argument('--disable-ffplay'  , action='store_true', help='disable ffplay build')
+    group_prog.add_argument('--disable-ffprobe' , action='store_true', help='disable ffprobe build')
+
+    group_doc = parser.add_argument_group(title='Documentation options')
+    group_doc.add_argument('--disable-doc'      , action='store_true', help='do not build documentation')
+    group_doc.add_argument('--disable-htmlpages', action='store_true', help='do not build HTML documentation pages')
+    group_doc.add_argument('--disable-manpages' , action='store_true', help='do not build man documentation pages')
+    group_doc.add_argument('--disable-podpages' , action='store_true', help='do not build POD documentation pages')
+    group_doc.add_argument('--disable-txtpages' , action='store_true', help='do not build text documentation pages')
+
+    group_cmp = parser.add_argument_group(title='Component options')
+    group_cmp.add_argument('--disable-avdevice'         , action='store_true', help='disable libavdevice build')
+    group_cmp.add_argument('--disable-avcodec'          , action='store_true', help='disable libavcodec build')
+    group_cmp.add_argument('--disable-avformat'         , action='store_true', help='disable libavformat build')
+    group_cmp.add_argument('--disable-swresample'       , action='store_true', help='disable libswresample build')
+    group_cmp.add_argument('--disable-swscale'          , action='store_true', help='disable libswscale build')
+    group_cmp.add_argument('--disable-postproc'         , action='store_true', help='disable libpostproc build')
+    group_cmp.add_argument('--disable-avfilter'         , action='store_true', help='disable libavfilter build')
+    group_cmp.add_argument('--enable-avresample'        , action='store_true', help='enable libavresample build (deprecated) [no]')
+    group_cmp.add_argument('--disable-pthreads'         , action='store_true', help='disable pthreads [autodetect]')
+    group_cmp.add_argument('--disable-w32threads'       , action='store_true', help='disable Win32 threads [autodetect]')
+    group_cmp.add_argument('--disable-os2threads'       , action='store_true', help='disable OS/2 threads [autodetect]')
+    group_cmp.add_argument('--disable-network'          , action='store_true', help='disable network support [no]')
+    group_cmp.add_argument('--disable-dct'              , action='store_true', help='disable DCT code')
+    group_cmp.add_argument('--disable-dwt'              , action='store_true', help='disable DWT code')
+    group_cmp.add_argument('--disable-error-resilience' , action='store_true', help='disable error resilience code')
+    group_cmp.add_argument('--disable-lsp'              , action='store_true', help='disable LSP code')
+    group_cmp.add_argument('--disable-lzo'              , action='store_true', help='disable LZO decoder code')
+    group_cmp.add_argument('--disable-mdct'             , action='store_true', help='disable MDCT code')
+    group_cmp.add_argument('--disable-rdft'             , action='store_true', help='disable RDFT code')
+    group_cmp.add_argument('--disable-fft'              , action='store_true', help='disable FFT code')
+    group_cmp.add_argument('--disable-faan'             , action='store_true', help='disable floating point AAN (I)DCT code')
+    group_cmp.add_argument('--disable-pixelutils'       , action='store_true', help='disable pixel utils in libavutil')
+
+    group_icmp = parser.add_argument_group(title='Individual component options')
+    group_icmp.add_argument('--disable-everything'     , action='store_true', help='disable all components listed below')
+    group_icmp.add_argument('--disable-encoder'        , action='store'     , help='disable encoder NAME', metavar='NAME')
+    group_icmp.add_argument('--enable-encoder'         , action='store'     , help='enable encoder NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-encoders'       , action='store_true', help='disable all encoders')
+    group_icmp.add_argument('--disable-decoder'        , action='store'     , help='disable decoder NAME', metavar='NAME')
+    group_icmp.add_argument('--enable-decoder'         , action='store'     , help='enable decoder NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-decoders'       , action='store_true', help='disable all decoders')
+    group_icmp.add_argument('--disable-hwaccel'        , action='store'     , help='disable hwaccel NAME', metavar='NAME')
+    group_icmp.add_argument('--enable-hwaccel'         , action='store'     , help='enable hwaccel NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-hwaccels'       , action='store_true', help='disable all hwaccels')
+    group_icmp.add_argument('--disable-muxer'          , action='store'     , help='disable muxer NAME', metavar='NAME')
+    group_icmp.add_argument('--enable-muxer'           , action='store'     , help='enable muxer NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-muxers'         , action='store_true', help='disable all muxers')
+    group_icmp.add_argument('--disable-demuxer'        , action='store'     , help='disable demuxer NAME', metavar='NAME')
+    group_icmp.add_argument('--enable-demuxer'         , action='store'     , help='enable demuxer NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-demuxers'       , action='store_true', help='disable all demuxers')
+    group_icmp.add_argument('--enable-parser'          , action='store'     , help='enable parser NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-parser'         , action='store'     , help='disable parser NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-parsers'        , action='store_true', help='disable all parsers')
+    group_icmp.add_argument('--enable-bsf'             , action='store'     , help='enable bitstream filter NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-bsf'            , action='store'     , help='disable bitstream filter NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-bsfs'           , action='store_true', help='disable all bitstream filters')
+    group_icmp.add_argument('--enable-protocol'        , action='store'     , help='enable protocol NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-protocol'       , action='store'     , help='disable protocol NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-protocols'      , action='store_true', help='disable all protocols')
+    group_icmp.add_argument('--enable-indev'           , action='store'     , help='enable input device NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-indev'          , action='store'     , help='disable input device NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-indevs'         , action='store_true', help='disable input devices')
+    group_icmp.add_argument('--enable-outdev'          , action='store'     , help='enable output device NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-outdev'         , action='store'     , help='disable output device NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-outdevs'        , action='store_true', help='disable output devices')
+    group_icmp.add_argument('--disable-devices'        , action='store_true', help='disable all devices')
+    group_icmp.add_argument('--enable-filter'          , action='store'     , help='enable filter NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-filter'         , action='store'     , help='disable filter NAME', metavar='NAME')
+    group_icmp.add_argument('--disable-filters'        , action='store_true', help='disable all filters')
+
+    group_extl = parser.add_argument_group(title='External library options', description='''
+Using any of the following switches will allow FFmpeg to link to the
+corresponding external library. All the components depending on that library
+will become enabled, if all their other dependencies are met and they are not
+explicitly disabled. E.g. --enable-libwavpack will enable linking to
+libwavpack and allow the libwavpack encoder to be built, unless it is
+specifically disabled with --disable-encoder=libwavpack.
+
+Note that only the system libraries are auto-detected. All the other external
+libraries must be explicitly enabled.
+
+Also note that the following help text describes the purpose of the libraries
+themselves, not all their features will necessarily be usable by FFmpeg.
 ''')
 
-# #!/bin/sh
-# #
-# # FFmpeg configure script
-# #
-# # Copyright (c) 2000-2002 Fabrice Bellard
-# # Copyright (c) 2005-2008 Diego Biurrun
-# # Copyright (c) 2005-2008 Mans Rullgard
-# #
-
-# # Prevent locale nonsense from breaking basic text processing.
-# LC_ALL=C
-# export LC_ALL
-
-# # make sure we are running under a compatible shell
-# # try to make this part work with most shells
-
-# try_exec(){
-#     echo "Trying shell $1"
-#     type "$1" > /dev/null 2>&1 && exec "$@"
-# }
-
-# unset foo
-# (: ${foo%%bar}) 2> /dev/null
-# E1="$?"
-
-# (: ${foo?}) 2> /dev/null
-# E2="$?"
-
-# if test "$E1" != 0 || test "$E2" = 0; then
-#     echo "Broken shell detected.  Trying alternatives."
-#     export FF_CONF_EXEC
-#     if test "0$FF_CONF_EXEC" -lt 1; then
-#         FF_CONF_EXEC=1
-#         try_exec bash "$0" "$@"
-#     fi
-#     if test "0$FF_CONF_EXEC" -lt 2; then
-#         FF_CONF_EXEC=2
-#         try_exec ksh "$0" "$@"
-#     fi
-#     if test "0$FF_CONF_EXEC" -lt 3; then
-#         FF_CONF_EXEC=3
-#         try_exec /usr/xpg4/bin/sh "$0" "$@"
-#     fi
-#     echo "No compatible shell script interpreter found."
-#     echo "This configure script requires a POSIX-compatible shell"
-#     echo "such as bash or ksh."
-#     echo "THIS IS NOT A BUG IN FFMPEG, DO NOT REPORT IT AS SUCH."
-#     echo "Instead, install a working POSIX-compatible shell."
-#     echo "Disabling this configure test will create a broken FFmpeg."
-#     if test "$BASH_VERSION" = '2.04.0(1)-release'; then
-#         echo "This bash version ($BASH_VERSION) is broken on your platform."
-#         echo "Upgrade to a later version if available."
-#     fi
-#     exit 1
-# fi
-
-# test -d /usr/xpg4/bin && PATH=/usr/xpg4/bin:$PATH
-
-# show_help(){
-#     cat <<EOF
-# Usage: configure [options]
-# Options: [defaults in brackets after descriptions]
-
-# Help options:
-#   --help                   print this message
-#   --quiet                  Suppress showing informative output
-#   --list-decoders          show all available decoders
-#   --list-encoders          show all available encoders
-#   --list-hwaccels          show all available hardware accelerators
-#   --list-demuxers          show all available demuxers
-#   --list-muxers            show all available muxers
-#   --list-parsers           show all available parsers
-#   --list-protocols         show all available protocols
-#   --list-bsfs              show all available bitstream filters
-#   --list-indevs            show all available input devices
-#   --list-outdevs           show all available output devices
-#   --list-filters           show all available filters
-
-# Standard options:
-#   --logfile=FILE           log tests and output to FILE [ffbuild/config.log]
-#   --disable-logging        do not log configure debug information
-#   --fatal-warnings         fail if any configure warning is generated
-#   --prefix=PREFIX          install in PREFIX [$prefix_default]
-#   --bindir=DIR             install binaries in DIR [PREFIX/bin]
-#   --datadir=DIR            install data files in DIR [PREFIX/share/ffmpeg]
-#   --docdir=DIR             install documentation in DIR [PREFIX/share/doc/ffmpeg]
-#   --libdir=DIR             install libs in DIR [PREFIX/lib]
-#   --shlibdir=DIR           install shared libs in DIR [LIBDIR]
-#   --incdir=DIR             install includes in DIR [PREFIX/include]
-#   --mandir=DIR             install man page in DIR [PREFIX/share/man]
-#   --pkgconfigdir=DIR       install pkg-config files in DIR [LIBDIR/pkgconfig]
-#   --enable-rpath           use rpath to allow installing libraries in paths
-#                            not part of the dynamic linker search path
-#                            use rpath when linking programs (USE WITH CARE)
-#   --install-name-dir=DIR   Darwin directory name for installed targets
-
-# Licensing options:
-#   --enable-gpl             allow use of GPL code, the resulting libs
-#                            and binaries will be under GPL [no]
-#   --enable-version3        upgrade (L)GPL to version 3 [no]
-#   --enable-nonfree         allow use of nonfree code, the resulting libs
-#                            and binaries will be unredistributable [no]
-
-# Configuration options:
-#   --disable-static         do not build static libraries [no]
-#   --enable-shared          build shared libraries [no]
-#   --enable-small           optimize for size instead of speed
-#   --disable-runtime-cpudetect disable detecting CPU capabilities at runtime (smaller binary)
-#   --enable-gray            enable full grayscale support (slower color)
-#   --disable-swscale-alpha  disable alpha channel support in swscale
-#   --disable-all            disable building components, libraries and programs
-#   --disable-autodetect     disable automatically detected external libraries [no]
-
-# Program options:
-#   --disable-programs       do not build command line programs
-#   --disable-ffmpeg         disable ffmpeg build
-#   --disable-ffplay         disable ffplay build
-#   --disable-ffprobe        disable ffprobe build
-
-# Documentation options:
-#   --disable-doc            do not build documentation
-#   --disable-htmlpages      do not build HTML documentation pages
-#   --disable-manpages       do not build man documentation pages
-#   --disable-podpages       do not build POD documentation pages
-#   --disable-txtpages       do not build text documentation pages
-
-# Component options:
-#   --disable-avdevice       disable libavdevice build
-#   --disable-avcodec        disable libavcodec build
-#   --disable-avformat       disable libavformat build
-#   --disable-swresample     disable libswresample build
-#   --disable-swscale        disable libswscale build
-#   --disable-postproc       disable libpostproc build
-#   --disable-avfilter       disable libavfilter build
-#   --enable-avresample      enable libavresample build (deprecated) [no]
-#   --disable-pthreads       disable pthreads [autodetect]
-#   --disable-w32threads     disable Win32 threads [autodetect]
-#   --disable-os2threads     disable OS/2 threads [autodetect]
-#   --disable-network        disable network support [no]
-#   --disable-dct            disable DCT code
-#   --disable-dwt            disable DWT code
-#   --disable-error-resilience disable error resilience code
-#   --disable-lsp            disable LSP code
-#   --disable-lzo            disable LZO decoder code
-#   --disable-mdct           disable MDCT code
-#   --disable-rdft           disable RDFT code
-#   --disable-fft            disable FFT code
-#   --disable-faan           disable floating point AAN (I)DCT code
-#   --disable-pixelutils     disable pixel utils in libavutil
-
-# Individual component options:
-#   --disable-everything     disable all components listed below
-#   --disable-encoder=NAME   disable encoder NAME
-#   --enable-encoder=NAME    enable encoder NAME
-#   --disable-encoders       disable all encoders
-#   --disable-decoder=NAME   disable decoder NAME
-#   --enable-decoder=NAME    enable decoder NAME
-#   --disable-decoders       disable all decoders
-#   --disable-hwaccel=NAME   disable hwaccel NAME
-#   --enable-hwaccel=NAME    enable hwaccel NAME
-#   --disable-hwaccels       disable all hwaccels
-#   --disable-muxer=NAME     disable muxer NAME
-#   --enable-muxer=NAME      enable muxer NAME
-#   --disable-muxers         disable all muxers
-#   --disable-demuxer=NAME   disable demuxer NAME
-#   --enable-demuxer=NAME    enable demuxer NAME
-#   --disable-demuxers       disable all demuxers
-#   --enable-parser=NAME     enable parser NAME
-#   --disable-parser=NAME    disable parser NAME
-#   --disable-parsers        disable all parsers
-#   --enable-bsf=NAME        enable bitstream filter NAME
-#   --disable-bsf=NAME       disable bitstream filter NAME
-#   --disable-bsfs           disable all bitstream filters
-#   --enable-protocol=NAME   enable protocol NAME
-#   --disable-protocol=NAME  disable protocol NAME
-#   --disable-protocols      disable all protocols
-#   --enable-indev=NAME      enable input device NAME
-#   --disable-indev=NAME     disable input device NAME
-#   --disable-indevs         disable input devices
-#   --enable-outdev=NAME     enable output device NAME
-#   --disable-outdev=NAME    disable output device NAME
-#   --disable-outdevs        disable output devices
-#   --disable-devices        disable all devices
-#   --enable-filter=NAME     enable filter NAME
-#   --disable-filter=NAME    disable filter NAME
-#   --disable-filters        disable all filters
-
-# External library support:
-
-#   Using any of the following switches will allow FFmpeg to link to the
-#   corresponding external library. All the components depending on that library
-#   will become enabled, if all their other dependencies are met and they are not
-#   explicitly disabled. E.g. --enable-libwavpack will enable linking to
-#   libwavpack and allow the libwavpack encoder to be built, unless it is
-#   specifically disabled with --disable-encoder=libwavpack.
-
-#   Note that only the system libraries are auto-detected. All the other external
-#   libraries must be explicitly enabled.
-
-#   Also note that the following help text describes the purpose of the libraries
-#   themselves, not all their features will necessarily be usable by FFmpeg.
+    # group_extl.add_argument(''        , action='store_true', help='')
 
 #   --disable-alsa           disable ALSA support [autodetect]
 #   --disable-appkit         disable Apple AppKit framework [autodetect]
@@ -374,7 +327,7 @@ Copyright (c) 2005-2008 Mans Rullgard
 #   --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
 #   --disable-videotoolbox   disable VideoToolbox code [autodetect]
 
-# Toolchain options:
+    group_tool = parser.add_argument_group(title='Toolchain options')
 #   --arch=ARCH              select architecture [$arch]
 #   --cpu=CPU                select the minimum required CPU (affects
 #                            instruction selection, may crash on older CPUs)
@@ -433,7 +386,7 @@ Copyright (c) 2005-2008 Mans Rullgard
 #   --enable-lto             use link-time optimization
 #   --env="ENV=override"     override the environment variables
 
-# Advanced options (experts only):
+    group_adv = parser.add_argument_group(title='Advanced options (experts only)')
 #   --malloc-prefix=PREFIX   prefix malloc and related names with PREFIX
 #   --custom-allocator=NAME  use a supported custom allocator
 #   --disable-symver         disable symbol versioning
@@ -443,7 +396,7 @@ Copyright (c) 2005-2008 Mans Rullgard
 #                            (faster, but may crash)
 #   --sws-max-filter-size=N  the max filter size swscale uses [$sws_max_filter_size_default]
 
-# Optimization options (experts only):
+    group_optz = parser.add_argument_group(title='Optimization options (experts only)')
 #   --disable-asm            disable all assembly optimizations
 #   --disable-altivec        disable AltiVec optimizations
 #   --disable-vsx            disable VSX optimizations
@@ -480,7 +433,7 @@ Copyright (c) 2005-2008 Mans Rullgard
 #   --disable-mmi            disable Loongson SIMD optimizations
 #   --disable-fast-unaligned consider unaligned accesses slow
 
-# Developer options (useful when working on FFmpeg itself):
+    group_dev = parser.add_argument_group(title='Developer options (useful when working on FFmpeg itself)')
 #   --disable-debug          disable debugging symbols
 #   --enable-debug=LEVEL     set the debug level [$debuglevel]
 #   --disable-optimizations  disable compiler optimizations
@@ -515,10 +468,9 @@ Copyright (c) 2005-2008 Mans Rullgard
 #                            in the name) of tests whose result is ignored
 #   --enable-linux-perf      enable Linux Performance Monitor API
 
-# NOTE: Object files are built at the place where configure is launched.
-# EOF
-#   exit 0
-# }
+    args = parser.parse_args()
+    if args.help:
+        parser.print_help()
 
 # if test -t 1 && which tput >/dev/null 2>&1; then
 #     ncolors=$(tput colors)
