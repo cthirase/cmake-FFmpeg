@@ -51,7 +51,7 @@ if __name__=='__main__':
                 add_help=False)
     group_help = parser.add_argument_group(title='Help options')
     group_help.add_argument('-h', '--help'    , action='store_true', help='print this message')
-    group_help.add_argument('-q', '--quiet'   , action='store_true', help='Suppress showing informative output')
+    group_help.add_argument('--quiet'         , action='store_true', help='Suppress showing informative output')
     group_help.add_argument('--list-decoders' , action='store_true', help='show all available decoders')
     group_help.add_argument('--list-encoders' , action='store_true', help='show all available encoders')
     group_help.add_argument('--list-hwaccels' , action='store_true', help='show all available hardware accelerators')
@@ -65,20 +65,20 @@ if __name__=='__main__':
     group_help.add_argument('--list-filters'  , action='store_true', help='show all available filters')
 
     group_std = parser.add_argument_group(title='Standard options')
-    group_std.add_argument('--logfile'          , action='store'     , help='log tests and output to FILE [ffbuild/config.log]', metavar='FILE', type=argparse.FileType('w'))
-    group_std.add_argument('--disable-logging'  , action='store_true', help='do not log configure debug information')
-    group_std.add_argument('--fatal-warnings'   , action='store_true', help='fail if any configure warning is generated')
-    group_std.add_argument('--prefix'           , action='store'     , help='install in PREFIX [$prefix_default]', metavar='PREFIX')
-    group_std.add_argument('--bindir'           , action='store'     , help='install binaries in DIR [PREFIX/bin]', metavar='DIR')
-    group_std.add_argument('--datadir'          , action='store'     , help='install data files in DIR [PREFIX/share/ffmpeg]', metavar='DIR')
-    group_std.add_argument('--docdir'           , action='store'     , help='install documentation in DIR [PREFIX/share/doc/ffmpeg]', metavar='DIR')
-    group_std.add_argument('--libdir'           , action='store'     , help='install libs in DIR [PREFIX/lib]', metavar='DIR')
-    group_std.add_argument('--shlibdir'         , action='store'     , help='install shared libs in DIR [LIBDIR]', metavar='DIR')
-    group_std.add_argument('--incdir'           , action='store'     , help='install includes in DIR [PREFIX/include]', metavar='DIR')
-    group_std.add_argument('--mandir'           , action='store'     , help='install man page in DIR [PREFIX/share/man]', metavar='DIR')
-    group_std.add_argument('--pkgconfigdir'     , action='store'     , help='install pkg-config files in DIR [LIBDIR/pkgconfig]', metavar='DIR')
-    group_std.add_argument('--enable-rpath'     , action='store_true', help='use rpath to allow installing libraries in paths\nnot part of the dynamic linker search path\nuse rpath when linking programs (USE WITH CARE)')
-    group_std.add_argument('--install-name-dir' , action='store'     , help='Darwin directory name for installed targets', metavar='DIR')
+    group_std.add_argument('--logfile'          , action='store'     , metavar='FILE'  , help='log tests and output to FILE [ffbuild/config.log]', type=argparse.FileType('w'))
+    group_std.add_argument('--disable-logging'  , action='store_true'                  , help='do not log configure debug information')
+    group_std.add_argument('--fatal-warnings'   , action='store_true'                  , help='fail if any configure warning is generated')
+    group_std.add_argument('--prefix'           , action='store'     , metavar='PREFIX', help='install in PREFIX [$prefix_default]')
+    group_std.add_argument('--bindir'           , action='store'     , metavar='DIR'   , help='install binaries in DIR [PREFIX/bin]')
+    group_std.add_argument('--datadir'          , action='store'     , metavar='DIR'   , help='install data files in DIR [PREFIX/share/ffmpeg]')
+    group_std.add_argument('--docdir'           , action='store'     , metavar='DIR'   , help='install documentation in DIR [PREFIX/share/doc/ffmpeg]')
+    group_std.add_argument('--libdir'           , action='store'     , metavar='DIR'   , help='install libs in DIR [PREFIX/lib]')
+    group_std.add_argument('--shlibdir'         , action='store'     , metavar='DIR'   , help='install shared libs in DIR [LIBDIR]')
+    group_std.add_argument('--incdir'           , action='store'     , metavar='DIR'   , help='install includes in DIR [PREFIX/include]')
+    group_std.add_argument('--mandir'           , action='store'     , metavar='DIR'   , help='install man page in DIR [PREFIX/share/man]')
+    group_std.add_argument('--pkgconfigdir'     , action='store'     , metavar='DIR'   , help='install pkg-config files in DIR [LIBDIR/pkgconfig]')
+    group_std.add_argument('--enable-rpath'     , action='store_true'                  , help='use rpath to allow installing libraries in paths\nnot part of the dynamic linker search path\nuse rpath when linking programs (USE WITH CARE)')
+    group_std.add_argument('--install-name-dir' , action='store'     , metavar='DIR'   , help='Darwin directory name for installed targets')
 
     group_lic = parser.add_argument_group(title='Licensing options')
     group_lic.add_argument('--enable-gpl'     , action='store_true', help='allow use of GPL code, the resulting libs and binaries will be under GPL [no]')
@@ -133,41 +133,41 @@ if __name__=='__main__':
     group_cmp.add_argument('--disable-pixelutils'       , action='store_true', help='disable pixel utils in libavutil')
 
     group_icmp = parser.add_argument_group(title='Individual component options')
-    group_icmp.add_argument('--disable-everything'     , action='store_true', help='disable all components listed below')
-    group_icmp.add_argument('--disable-encoder'        , action='store'     , help='disable encoder NAME', metavar='NAME')
-    group_icmp.add_argument('--enable-encoder'         , action='store'     , help='enable encoder NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-encoders'       , action='store_true', help='disable all encoders')
-    group_icmp.add_argument('--disable-decoder'        , action='store'     , help='disable decoder NAME', metavar='NAME')
-    group_icmp.add_argument('--enable-decoder'         , action='store'     , help='enable decoder NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-decoders'       , action='store_true', help='disable all decoders')
-    group_icmp.add_argument('--disable-hwaccel'        , action='store'     , help='disable hwaccel NAME', metavar='NAME')
-    group_icmp.add_argument('--enable-hwaccel'         , action='store'     , help='enable hwaccel NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-hwaccels'       , action='store_true', help='disable all hwaccels')
-    group_icmp.add_argument('--disable-muxer'          , action='store'     , help='disable muxer NAME', metavar='NAME')
-    group_icmp.add_argument('--enable-muxer'           , action='store'     , help='enable muxer NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-muxers'         , action='store_true', help='disable all muxers')
-    group_icmp.add_argument('--disable-demuxer'        , action='store'     , help='disable demuxer NAME', metavar='NAME')
-    group_icmp.add_argument('--enable-demuxer'         , action='store'     , help='enable demuxer NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-demuxers'       , action='store_true', help='disable all demuxers')
-    group_icmp.add_argument('--enable-parser'          , action='store'     , help='enable parser NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-parser'         , action='store'     , help='disable parser NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-parsers'        , action='store_true', help='disable all parsers')
-    group_icmp.add_argument('--enable-bsf'             , action='store'     , help='enable bitstream filter NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-bsf'            , action='store'     , help='disable bitstream filter NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-bsfs'           , action='store_true', help='disable all bitstream filters')
-    group_icmp.add_argument('--enable-protocol'        , action='store'     , help='enable protocol NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-protocol'       , action='store'     , help='disable protocol NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-protocols'      , action='store_true', help='disable all protocols')
-    group_icmp.add_argument('--enable-indev'           , action='store'     , help='enable input device NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-indev'          , action='store'     , help='disable input device NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-indevs'         , action='store_true', help='disable input devices')
-    group_icmp.add_argument('--enable-outdev'          , action='store'     , help='enable output device NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-outdev'         , action='store'     , help='disable output device NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-outdevs'        , action='store_true', help='disable output devices')
-    group_icmp.add_argument('--disable-devices'        , action='store_true', help='disable all devices')
-    group_icmp.add_argument('--enable-filter'          , action='store'     , help='enable filter NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-filter'         , action='store'     , help='disable filter NAME', metavar='NAME')
-    group_icmp.add_argument('--disable-filters'        , action='store_true', help='disable all filters')
+    group_icmp.add_argument('--disable-everything'     , action='store_true'                , help='disable all components listed below')
+    group_icmp.add_argument('--disable-encoder'        , action='store'     , metavar='NAME', help='disable encoder NAME')
+    group_icmp.add_argument('--enable-encoder'         , action='store'     , metavar='NAME', help='enable encoder NAME')
+    group_icmp.add_argument('--disable-encoders'       , action='store_true'                , help='disable all encoders')
+    group_icmp.add_argument('--disable-decoder'        , action='store'     , metavar='NAME', help='disable decoder NAME')
+    group_icmp.add_argument('--enable-decoder'         , action='store'     , metavar='NAME', help='enable decoder NAME')
+    group_icmp.add_argument('--disable-decoders'       , action='store_true'                , help='disable all decoders')
+    group_icmp.add_argument('--disable-hwaccel'        , action='store'     , metavar='NAME', help='disable hwaccel NAME')
+    group_icmp.add_argument('--enable-hwaccel'         , action='store'     , metavar='NAME', help='enable hwaccel NAME')
+    group_icmp.add_argument('--disable-hwaccels'       , action='store_true'                , help='disable all hwaccels')
+    group_icmp.add_argument('--disable-muxer'          , action='store'     , metavar='NAME', help='disable muxer NAME')
+    group_icmp.add_argument('--enable-muxer'           , action='store'     , metavar='NAME', help='enable muxer NAME')
+    group_icmp.add_argument('--disable-muxers'         , action='store_true'                , help='disable all muxers')
+    group_icmp.add_argument('--disable-demuxer'        , action='store'     , metavar='NAME', help='disable demuxer NAME')
+    group_icmp.add_argument('--enable-demuxer'         , action='store'     , metavar='NAME', help='enable demuxer NAME')
+    group_icmp.add_argument('--disable-demuxers'       , action='store_true'                , help='disable all demuxers')
+    group_icmp.add_argument('--enable-parser'          , action='store'     , metavar='NAME', help='enable parser NAME')
+    group_icmp.add_argument('--disable-parser'         , action='store'     , metavar='NAME', help='disable parser NAME')
+    group_icmp.add_argument('--disable-parsers'        , action='store_true'                , help='disable all parsers')
+    group_icmp.add_argument('--enable-bsf'             , action='store'     , metavar='NAME', help='enable bitstream filter NAME')
+    group_icmp.add_argument('--disable-bsf'            , action='store'     , metavar='NAME', help='disable bitstream filter NAME')
+    group_icmp.add_argument('--disable-bsfs'           , action='store_true'                , help='disable all bitstream filters')
+    group_icmp.add_argument('--enable-protocol'        , action='store'     , metavar='NAME', help='enable protocol NAME')
+    group_icmp.add_argument('--disable-protocol'       , action='store'     , metavar='NAME', help='disable protocol NAME')
+    group_icmp.add_argument('--disable-protocols'      , action='store_true'                , help='disable all protocols')
+    group_icmp.add_argument('--enable-indev'           , action='store'     , metavar='NAME', help='enable input device NAME')
+    group_icmp.add_argument('--disable-indev'          , action='store'     , metavar='NAME', help='disable input device NAME')
+    group_icmp.add_argument('--disable-indevs'         , action='store_true'                , help='disable input devices')
+    group_icmp.add_argument('--enable-outdev'          , action='store'     , metavar='NAME', help='enable output device NAME')
+    group_icmp.add_argument('--disable-outdev'         , action='store'     , metavar='NAME', help='disable output device NAME')
+    group_icmp.add_argument('--disable-outdevs'        , action='store_true'                , help='disable output devices')
+    group_icmp.add_argument('--disable-devices'        , action='store_true'                , help='disable all devices')
+    group_icmp.add_argument('--enable-filter'          , action='store'     , metavar='NAME', help='enable filter NAME')
+    group_icmp.add_argument('--disable-filter'         , action='store'     , metavar='NAME', help='disable filter NAME')
+    group_icmp.add_argument('--disable-filters'        , action='store_true'                , help='disable all filters')
 
     group_extl = parser.add_argument_group(title='External library options', description='''
 Using any of the following switches will allow FFmpeg to link to the
@@ -184,289 +184,255 @@ Also note that the following help text describes the purpose of the libraries
 themselves, not all their features will necessarily be usable by FFmpeg.
 ''')
 
-    # group_extl.add_argument(''        , action='store_true', help='')
+    group_extl.add_argument('--disable-alsa'              , action='store_true', help='disable ALSA support [autodetect]')
+    group_extl.add_argument('--disable-appkit'            , action='store_true', help='disable Apple AppKit framework [autodetect]')
+    group_extl.add_argument('--disable-avfoundation'      , action='store_true', help='disable Apple AVFoundation framework [autodetect]')
+    group_extl.add_argument('--enable-avisynth'           , action='store_true', help='enable reading of AviSynth script files [no]')
+    group_extl.add_argument('--disable-bzlib'             , action='store_true', help='disable bzlib [autodetect]')
+    group_extl.add_argument('--disable-coreimage'         , action='store_true', help='disable Apple CoreImage framework [autodetect]')
+    group_extl.add_argument('--enable-chromaprint'        , action='store_true', help='enable audio fingerprinting with chromaprint [no]')
+    group_extl.add_argument('--enable-frei0r'             , action='store_true', help='enable frei0r video filtering [no]')
+    group_extl.add_argument('--enable-gcrypt'             , action='store_true', help='enable gcrypt, needed for rtmp(t)e support\nif openssl, librtmp or gmp is not used [no]')
+    group_extl.add_argument('--enable-gmp'                , action='store_true', help='enable gmp, needed for rtmp(t)e support\nif openssl or librtmp is not used [no]')
+    group_extl.add_argument('--enable-gnutls'             , action='store_true', help='enable gnutls, needed for https support\nif openssl, libtls or mbedtls is not used [no]')
+    group_extl.add_argument('--disable-iconv'             , action='store_true', help='disable iconv [autodetect]')
+    group_extl.add_argument('--enable-jni'                , action='store_true', help='enable JNI support [no]')
+    group_extl.add_argument('--enable-ladspa'             , action='store_true', help='enable LADSPA audio filtering [no]')
+    group_extl.add_argument('--enable-libaom'             , action='store_true', help='enable AV1 video encoding/decoding via libaom [no]')
+    group_extl.add_argument('--enable-libaribb24'         , action='store_true', help='enable ARIB text and caption decoding via libaribb24 [no]')
+    group_extl.add_argument('--enable-libass'             , action='store_true', help='enable libass subtitles rendering, needed for subtitles and ass filter [no]')
+    group_extl.add_argument('--enable-libbluray'          , action='store_true', help='enable BluRay reading using libbluray [no]')
+    group_extl.add_argument('--enable-libbs2b'            , action='store_true', help='enable bs2b DSP library [no]')
+    group_extl.add_argument('--enable-libcaca'            , action='store_true', help='enable textual display using libcaca [no]')
+    group_extl.add_argument('--enable-libcelt'            , action='store_true', help='enable CELT decoding via libcelt [no]')
+    group_extl.add_argument('--enable-libcdio'            , action='store_true', help='enable audio CD grabbing with libcdio [no]')
+    group_extl.add_argument('--enable-libcodec2'          , action='store_true', help='enable codec2 en/decoding using libcodec2 [no]')
+    group_extl.add_argument('--enable-libdav1d'           , action='store_true', help='enable AV1 decoding via libdav1d [no]')
+    group_extl.add_argument('--enable-libdavs2'           , action='store_true', help='enable AVS2 decoding via libdavs2 [no]')
+    group_extl.add_argument('--enable-libdc1394'          , action='store_true', help='enable IIDC-1394 grabbing using libdc1394 and libraw1394 [no]')
+    group_extl.add_argument('--enable-libfdk-aac'         , action='store_true', help='enable AAC de/encoding via libfdk-aac [no]')
+    group_extl.add_argument('--enable-libflite'           , action='store_true', help='enable flite (voice synthesis) support via libflite [no]')
+    group_extl.add_argument('--enable-libfontconfig'      , action='store_true', help='enable libfontconfig, useful for drawtext filter [no]')
+    group_extl.add_argument('--enable-libfreetype'        , action='store_true', help='enable libfreetype, needed for drawtext filter [no]')
+    group_extl.add_argument('--enable-libfribidi'         , action='store_true', help='enable libfribidi, improves drawtext filter [no]')
+    group_extl.add_argument('--enable-libgme'             , action='store_true', help='enable Game Music Emu via libgme [no]')
+    group_extl.add_argument('--enable-libgsm'             , action='store_true', help='enable GSM de/encoding via libgsm [no]')
+    group_extl.add_argument('--enable-libiec61883'        , action='store_true', help='enable iec61883 via libiec61883 [no]')
+    group_extl.add_argument('--enable-libilbc'            , action='store_true', help='enable iLBC de/encoding via libilbc [no]')
+    group_extl.add_argument('--enable-libjack'            , action='store_true', help='enable JACK audio sound server [no]')
+    group_extl.add_argument('--enable-libklvanc'          , action='store_true', help='enable Kernel Labs VANC processing [no]')
+    group_extl.add_argument('--enable-libkvazaar'         , action='store_true', help='enable HEVC encoding via libkvazaar [no]')
+    group_extl.add_argument('--enable-liblensfun'         , action='store_true', help='enable lensfun lens correction [no]')
+    group_extl.add_argument('--enable-libmodplug'         , action='store_true', help='enable ModPlug via libmodplug [no]')
+    group_extl.add_argument('--enable-libmp3lame'         , action='store_true', help='enable MP3 encoding via libmp3lame [no]')
+    group_extl.add_argument('--enable-libopencore-amrnb'  , action='store_true', help='enable AMR-NB de/encoding via libopencore-amrnb [no]')
+    group_extl.add_argument('--enable-libopencore-amrwb'  , action='store_true', help='enable AMR-WB decoding via libopencore-amrwb [no]')
+    group_extl.add_argument('--enable-libopencv'          , action='store_true', help='enable video filtering via libopencv [no]')
+    group_extl.add_argument('--enable-libopenh264'        , action='store_true', help='enable H.264 encoding via OpenH264 [no]')
+    group_extl.add_argument('--enable-libopenjpeg'        , action='store_true', help='enable JPEG 2000 de/encoding via OpenJPEG [no]')
+    group_extl.add_argument('--enable-libopenmpt'         , action='store_true', help='enable decoding tracked files via libopenmpt [no]')
+    group_extl.add_argument('--enable-libopus'            , action='store_true', help='enable Opus de/encoding via libopus [no]')
+    group_extl.add_argument('--enable-libpulse'           , action='store_true', help='enable Pulseaudio input via libpulse [no]')
+    group_extl.add_argument('--enable-librsvg'            , action='store_true', help='enable SVG rasterization via librsvg [no]')
+    group_extl.add_argument('--enable-librubberband'      , action='store_true', help='enable rubberband needed for rubberband filter [no]')
+    group_extl.add_argument('--enable-librtmp'            , action='store_true', help='enable RTMP[E] support via librtmp [no]')
+    group_extl.add_argument('--enable-libshine'           , action='store_true', help='enable fixed-point MP3 encoding via libshine [no]')
+    group_extl.add_argument('--enable-libsmbclient'       , action='store_true', help='enable Samba protocol via libsmbclient [no]')
+    group_extl.add_argument('--enable-libsnappy'          , action='store_true', help='enable Snappy compression, needed for hap encoding [no]')
+    group_extl.add_argument('--enable-libsoxr'            , action='store_true', help='enable Include libsoxr resampling [no]')
+    group_extl.add_argument('--enable-libspeex'           , action='store_true', help='enable Speex de/encoding via libspeex [no]')
+    group_extl.add_argument('--enable-libsrt'             , action='store_true', help='enable Haivision SRT protocol via libsrt [no]')
+    group_extl.add_argument('--enable-libssh'             , action='store_true', help='enable SFTP protocol via libssh [no]')
+    group_extl.add_argument('--enable-libtensorflow'      , action='store_true', help='enable TensorFlow as a DNN module backend for DNN based filters like sr [no]')
+    group_extl.add_argument('--enable-libtesseract'       , action='store_true', help='enable Tesseract, needed for ocr filter [no]')
+    group_extl.add_argument('--enable-libtheora'          , action='store_true', help='enable Theora encoding via libtheora [no]')
+    group_extl.add_argument('--enable-libtls'             , action='store_true', help='enable LibreSSL (via libtls), needed for https support if openssl, gnutls or mbedtls is not used [no]')
+    group_extl.add_argument('--enable-libtwolame'         , action='store_true', help='enable MP2 encoding via libtwolame [no]')
+    group_extl.add_argument('--enable-libv4l2'            , action='store_true', help='enable libv4l2/v4l-utils [no]')
+    group_extl.add_argument('--enable-libvidstab'         , action='store_true', help='enable video stabilization using vid.stab [no]')
+    group_extl.add_argument('--enable-libvmaf'            , action='store_true', help='enable vmaf filter via libvmaf [no]')
+    group_extl.add_argument('--enable-libvo-amrwbenc'     , action='store_true', help='enable AMR-WB encoding via libvo-amrwbenc [no]')
+    group_extl.add_argument('--enable-libvorbis'          , action='store_true', help='enable Vorbis en/decoding via libvorbis, native implementation exists [no]')
+    group_extl.add_argument('--enable-libvpx'             , action='store_true', help='enable VP8 and VP9 de/encoding via libvpx [no]')
+    group_extl.add_argument('--enable-libwavpack'         , action='store_true', help='enable wavpack encoding via libwavpack [no]')
+    group_extl.add_argument('--enable-libwebp'            , action='store_true', help='enable WebP encoding via libwebp [no]')
+    group_extl.add_argument('--enable-libx264'            , action='store_true', help='enable H.264 encoding via x264 [no]')
+    group_extl.add_argument('--enable-libx265'            , action='store_true', help='enable HEVC encoding via x265 [no]')
+    group_extl.add_argument('--enable-libxavs'            , action='store_true', help='enable AVS encoding via xavs [no]')
+    group_extl.add_argument('--enable-libxavs2'           , action='store_true', help='enable AVS2 encoding via xavs2 [no]')
+    group_extl.add_argument('--enable-libxcb'             , action='store_true', help='enable X11 grabbing using XCB [autodetect]')
+    group_extl.add_argument('--enable-libxcb-shm'         , action='store_true', help='enable X11 grabbing shm communication [autodetect]')
+    group_extl.add_argument('--enable-libxcb-xfixes'      , action='store_true', help='enable X11 grabbing mouse rendering [autodetect]')
+    group_extl.add_argument('--enable-libxcb-shape'       , action='store_true', help='enable X11 grabbing shape rendering [autodetect]')
+    group_extl.add_argument('--enable-libxvid'            , action='store_true', help='enable Xvid encoding via xvidcore, native MPEG-4/Xvid encoder exists [no]')
+    group_extl.add_argument('--enable-libxml2'            , action='store_true', help='enable XML parsing using the C library libxml2, needed for dash demuxing support [no]')
+    group_extl.add_argument('--enable-libzimg'            , action='store_true', help='enable z.lib, needed for zscale filter [no]')
+    group_extl.add_argument('--enable-libzmq'             , action='store_true', help='enable message passing via libzmq [no]')
+    group_extl.add_argument('--enable-libzvbi'            , action='store_true', help='enable teletext support via libzvbi [no]')
+    group_extl.add_argument('--enable-lv2'                , action='store_true', help='enable LV2 audio filtering [no]')
+    group_extl.add_argument('--disable-lzma'              , action='store_true', help='disable lzma [autodetect]')
+    group_extl.add_argument('--enable-decklink'           , action='store_true', help='enable Blackmagic DeckLink I/O support [no]')
+    group_extl.add_argument('--enable-mbedtls'            , action='store_true', help='enable mbedTLS, needed for https support if openssl, gnutls or libtls is not used [no]')
+    group_extl.add_argument('--enable-mediacodec'         , action='store_true', help='enable Android MediaCodec support [no]')
+    group_extl.add_argument('--enable-libmysofa'          , action='store_true', help='enable libmysofa, needed for sofalizer filter [no]')
+    group_extl.add_argument('--enable-openal'             , action='store_true', help='enable OpenAL 1.1 capture support [no]')
+    group_extl.add_argument('--enable-opencl'             , action='store_true', help='enable OpenCL processing [no]')
+    group_extl.add_argument('--enable-opengl'             , action='store_true', help='enable OpenGL rendering [no]')
+    group_extl.add_argument('--enable-openssl'            , action='store_true', help='enable openssl, needed for https support if gnutls, libtls or mbedtls is not used [no]')
+    group_extl.add_argument('--enable-pocketsphinx'       , action='store_true', help='enable PocketSphinx, needed for asr filter [no]')
+    group_extl.add_argument('--disable-sndio'             , action='store_true', help='disable sndio support [autodetect]')
+    group_extl.add_argument('--disable-schannel'          , action='store_true', help='disable SChannel SSP, needed for TLS support on Windows if openssl and gnutls are not used [autodetect]')
+    group_extl.add_argument('--disable-sdl2'              , action='store_true', help='disable sdl2 [autodetect]')
+    group_extl.add_argument('--disable-securetransport'   , action='store_true', help='disable Secure Transport, needed for TLS support on OSX if openssl and gnutls are not used [autodetect]')
+    group_extl.add_argument('--enable-vapoursynth'        , action='store_true', help='enable VapourSynth demuxer [no]')
+    group_extl.add_argument('--disable-xlib'              , action='store_true', help='disable xlib [autodetect]')
+    group_extl.add_argument('--disable-zlib'              , action='store_true', help='disable zlib [autodetect]')
 
-#   --disable-alsa           disable ALSA support [autodetect]
-#   --disable-appkit         disable Apple AppKit framework [autodetect]
-#   --disable-avfoundation   disable Apple AVFoundation framework [autodetect]
-#   --enable-avisynth        enable reading of AviSynth script files [no]
-#   --disable-bzlib          disable bzlib [autodetect]
-#   --disable-coreimage      disable Apple CoreImage framework [autodetect]
-#   --enable-chromaprint     enable audio fingerprinting with chromaprint [no]
-#   --enable-frei0r          enable frei0r video filtering [no]
-#   --enable-gcrypt          enable gcrypt, needed for rtmp(t)e support
-#                            if openssl, librtmp or gmp is not used [no]
-#   --enable-gmp             enable gmp, needed for rtmp(t)e support
-#                            if openssl or librtmp is not used [no]
-#   --enable-gnutls          enable gnutls, needed for https support
-#                            if openssl, libtls or mbedtls is not used [no]
-#   --disable-iconv          disable iconv [autodetect]
-#   --enable-jni             enable JNI support [no]
-#   --enable-ladspa          enable LADSPA audio filtering [no]
-#   --enable-libaom          enable AV1 video encoding/decoding via libaom [no]
-#   --enable-libaribb24      enable ARIB text and caption decoding via libaribb24 [no]
-#   --enable-libass          enable libass subtitles rendering,
-#                            needed for subtitles and ass filter [no]
-#   --enable-libbluray       enable BluRay reading using libbluray [no]
-#   --enable-libbs2b         enable bs2b DSP library [no]
-#   --enable-libcaca         enable textual display using libcaca [no]
-#   --enable-libcelt         enable CELT decoding via libcelt [no]
-#   --enable-libcdio         enable audio CD grabbing with libcdio [no]
-#   --enable-libcodec2       enable codec2 en/decoding using libcodec2 [no]
-#   --enable-libdav1d        enable AV1 decoding via libdav1d [no]
-#   --enable-libdavs2        enable AVS2 decoding via libdavs2 [no]
-#   --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
-#                            and libraw1394 [no]
-#   --enable-libfdk-aac      enable AAC de/encoding via libfdk-aac [no]
-#   --enable-libflite        enable flite (voice synthesis) support via libflite [no]
-#   --enable-libfontconfig   enable libfontconfig, useful for drawtext filter [no]
-#   --enable-libfreetype     enable libfreetype, needed for drawtext filter [no]
-#   --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
-#   --enable-libgme          enable Game Music Emu via libgme [no]
-#   --enable-libgsm          enable GSM de/encoding via libgsm [no]
-#   --enable-libiec61883     enable iec61883 via libiec61883 [no]
-#   --enable-libilbc         enable iLBC de/encoding via libilbc [no]
-#   --enable-libjack         enable JACK audio sound server [no]
-#   --enable-libklvanc       enable Kernel Labs VANC processing [no]
-#   --enable-libkvazaar      enable HEVC encoding via libkvazaar [no]
-#   --enable-liblensfun      enable lensfun lens correction [no]
-#   --enable-libmodplug      enable ModPlug via libmodplug [no]
-#   --enable-libmp3lame      enable MP3 encoding via libmp3lame [no]
-#   --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
-#   --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
-#   --enable-libopencv       enable video filtering via libopencv [no]
-#   --enable-libopenh264     enable H.264 encoding via OpenH264 [no]
-#   --enable-libopenjpeg     enable JPEG 2000 de/encoding via OpenJPEG [no]
-#   --enable-libopenmpt      enable decoding tracked files via libopenmpt [no]
-#   --enable-libopus         enable Opus de/encoding via libopus [no]
-#   --enable-libpulse        enable Pulseaudio input via libpulse [no]
-#   --enable-librsvg         enable SVG rasterization via librsvg [no]
-#   --enable-librubberband   enable rubberband needed for rubberband filter [no]
-#   --enable-librtmp         enable RTMP[E] support via librtmp [no]
-#   --enable-libshine        enable fixed-point MP3 encoding via libshine [no]
-#   --enable-libsmbclient    enable Samba protocol via libsmbclient [no]
-#   --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
-#   --enable-libsoxr         enable Include libsoxr resampling [no]
-#   --enable-libspeex        enable Speex de/encoding via libspeex [no]
-#   --enable-libsrt          enable Haivision SRT protocol via libsrt [no]
-#   --enable-libssh          enable SFTP protocol via libssh [no]
-#   --enable-libtensorflow   enable TensorFlow as a DNN module backend
-#                            for DNN based filters like sr [no]
-#   --enable-libtesseract    enable Tesseract, needed for ocr filter [no]
-#   --enable-libtheora       enable Theora encoding via libtheora [no]
-#   --enable-libtls          enable LibreSSL (via libtls), needed for https support
-#                            if openssl, gnutls or mbedtls is not used [no]
-#   --enable-libtwolame      enable MP2 encoding via libtwolame [no]
-#   --enable-libv4l2         enable libv4l2/v4l-utils [no]
-#   --enable-libvidstab      enable video stabilization using vid.stab [no]
-#   --enable-libvmaf         enable vmaf filter via libvmaf [no]
-#   --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no]
-#   --enable-libvorbis       enable Vorbis en/decoding via libvorbis,
-#                            native implementation exists [no]
-#   --enable-libvpx          enable VP8 and VP9 de/encoding via libvpx [no]
-#   --enable-libwavpack      enable wavpack encoding via libwavpack [no]
-#   --enable-libwebp         enable WebP encoding via libwebp [no]
-#   --enable-libx264         enable H.264 encoding via x264 [no]
-#   --enable-libx265         enable HEVC encoding via x265 [no]
-#   --enable-libxavs         enable AVS encoding via xavs [no]
-#   --enable-libxavs2        enable AVS2 encoding via xavs2 [no]
-#   --enable-libxcb          enable X11 grabbing using XCB [autodetect]
-#   --enable-libxcb-shm      enable X11 grabbing shm communication [autodetect]
-#   --enable-libxcb-xfixes   enable X11 grabbing mouse rendering [autodetect]
-#   --enable-libxcb-shape    enable X11 grabbing shape rendering [autodetect]
-#   --enable-libxvid         enable Xvid encoding via xvidcore,
-#                            native MPEG-4/Xvid encoder exists [no]
-#   --enable-libxml2         enable XML parsing using the C library libxml2, needed
-#                            for dash demuxing support [no]
-#   --enable-libzimg         enable z.lib, needed for zscale filter [no]
-#   --enable-libzmq          enable message passing via libzmq [no]
-#   --enable-libzvbi         enable teletext support via libzvbi [no]
-#   --enable-lv2             enable LV2 audio filtering [no]
-#   --disable-lzma           disable lzma [autodetect]
-#   --enable-decklink        enable Blackmagic DeckLink I/O support [no]
-#   --enable-mbedtls         enable mbedTLS, needed for https support
-#                            if openssl, gnutls or libtls is not used [no]
-#   --enable-mediacodec      enable Android MediaCodec support [no]
-#   --enable-libmysofa       enable libmysofa, needed for sofalizer filter [no]
-#   --enable-openal          enable OpenAL 1.1 capture support [no]
-#   --enable-opencl          enable OpenCL processing [no]
-#   --enable-opengl          enable OpenGL rendering [no]
-#   --enable-openssl         enable openssl, needed for https support
-#                            if gnutls, libtls or mbedtls is not used [no]
-#   --enable-pocketsphinx    enable PocketSphinx, needed for asr filter [no]
-#   --disable-sndio          disable sndio support [autodetect]
-#   --disable-schannel       disable SChannel SSP, needed for TLS support on
-#                            Windows if openssl and gnutls are not used [autodetect]
-#   --disable-sdl2           disable sdl2 [autodetect]
-#   --disable-securetransport disable Secure Transport, needed for TLS support
-#                            on OSX if openssl and gnutls are not used [autodetect]
-#   --enable-vapoursynth     enable VapourSynth demuxer [no]
-#   --disable-xlib           disable xlib [autodetect]
-#   --disable-zlib           disable zlib [autodetect]
-
-#   The following libraries provide various hardware acceleration features:
-#   --disable-amf            disable AMF video encoding code [autodetect]
-#   --disable-audiotoolbox   disable Apple AudioToolbox code [autodetect]
-#   --enable-cuda-nvcc       enable Nvidia CUDA compiler [no]
-#   --disable-cuda-llvm      disable CUDA compilation using clang [autodetect]
-#   --disable-cuvid          disable Nvidia CUVID support [autodetect]
-#   --disable-d3d11va        disable Microsoft Direct3D 11 video acceleration code [autodetect]
-#   --disable-dxva2          disable Microsoft DirectX 9 video acceleration code [autodetect]
-#   --disable-ffnvcodec      disable dynamically linked Nvidia code [autodetect]
-#   --enable-libdrm          enable DRM code (Linux) [no]
-#   --enable-libmfx          enable Intel MediaSDK (AKA Quick Sync Video) code via libmfx [no]
-#   --enable-libnpp          enable Nvidia Performance Primitives-based code [no]
-#   --enable-mmal            enable Broadcom Multi-Media Abstraction Layer (Raspberry Pi) via MMAL [no]
-#   --disable-nvdec          disable Nvidia video decoding acceleration (via hwaccel) [autodetect]
-#   --disable-nvenc          disable Nvidia video encoding code [autodetect]
-#   --enable-omx             enable OpenMAX IL code [no]
-#   --enable-omx-rpi         enable OpenMAX IL code for Raspberry Pi [no]
-#   --enable-rkmpp           enable Rockchip Media Process Platform code [no]
-#   --disable-v4l2-m2m       disable V4L2 mem2mem code [autodetect]
-#   --disable-vaapi          disable Video Acceleration API (mainly Unix/Intel) code [autodetect]
-#   --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
-#   --disable-videotoolbox   disable VideoToolbox code [autodetect]
+    group_extl_hwa = parser.add_argument_group(title='The following libraries provide various hardware acceleration features')
+    group_extl_hwa.add_argument('--disable-amf'             , action='store_true', help='disable AMF video encoding code [autodetect]')
+    group_extl_hwa.add_argument('--disable-audiotoolbox'    , action='store_true', help='disable Apple AudioToolbox code [autodetect]')
+    group_extl_hwa.add_argument('--enable-cuda-nvcc'        , action='store_true', help='enable Nvidia CUDA compiler [no]')
+    group_extl_hwa.add_argument('--disable-cuda-llvm'       , action='store_true', help='disable CUDA compilation using clang [autodetect]')
+    group_extl_hwa.add_argument('--disable-cuvid'           , action='store_true', help='disable Nvidia CUVID support [autodetect]')
+    group_extl_hwa.add_argument('--disable-d3d11va'         , action='store_true', help='disable Microsoft Direct3D 11 video acceleration code [autodetect]')
+    group_extl_hwa.add_argument('--disable-dxva2'           , action='store_true', help='disable Microsoft DirectX 9 video acceleration code [autodetect]')
+    group_extl_hwa.add_argument('--disable-ffnvcodec'       , action='store_true', help='disable dynamically linked Nvidia code [autodetect]')
+    group_extl_hwa.add_argument('--enable-libdrm'           , action='store_true', help='enable DRM code (Linux) [no]')
+    group_extl_hwa.add_argument('--enable-libmfx'           , action='store_true', help='enable Intel MediaSDK (AKA Quick Sync Video) code via libmfx [no]')
+    group_extl_hwa.add_argument('--enable-libnpp'           , action='store_true', help='enable Nvidia Performance Primitives-based code [no]')
+    group_extl_hwa.add_argument('--enable-mmal'             , action='store_true', help='enable Broadcom Multi-Media Abstraction Layer (Raspberry Pi) via MMAL [no]')
+    group_extl_hwa.add_argument('--disable-nvdec'           , action='store_true', help='disable Nvidia video decoding acceleration (via hwaccel) [autodetect]')
+    group_extl_hwa.add_argument('--disable-nvenc'           , action='store_true', help='disable Nvidia video encoding code [autodetect]')
+    group_extl_hwa.add_argument('--enable-omx'              , action='store_true', help='enable OpenMAX IL code [no]')
+    group_extl_hwa.add_argument('--enable-omx-rpi'          , action='store_true', help='enable OpenMAX IL code for Raspberry Pi [no]')
+    group_extl_hwa.add_argument('--enable-rkmpp'            , action='store_true', help='enable Rockchip Media Process Platform code [no]')
+    group_extl_hwa.add_argument('--disable-v4l2-m2m'        , action='store_true', help='disable V4L2 mem2mem code [autodetect]')
+    group_extl_hwa.add_argument('--disable-vaapi'           , action='store_true', help='disable Video Acceleration API (mainly Unix/Intel) code [autodetect]')
+    group_extl_hwa.add_argument('--disable-vdpau'           , action='store_true', help='disable Nvidia Video Decode and Presentation API for Unix code [autodetect]')
+    group_extl_hwa.add_argument('--disable-videotoolbox'    , action='store_true', help='disable VideoToolbox code [autodetect]')
 
     group_tool = parser.add_argument_group(title='Toolchain options')
-#   --arch=ARCH              select architecture [$arch]
-#   --cpu=CPU                select the minimum required CPU (affects
-#                            instruction selection, may crash on older CPUs)
-#   --cross-prefix=PREFIX    use PREFIX for compilation tools [$cross_prefix]
-#   --progs-suffix=SUFFIX    program name suffix []
-#   --enable-cross-compile   assume a cross-compiler is used
-#   --sysroot=PATH           root of cross-build tree
-#   --sysinclude=PATH        location of cross-build system headers
-#   --target-os=OS           compiler targets OS [$target_os]
-#   --target-exec=CMD        command to run executables on target
-#   --target-path=DIR        path to view of build directory on target
-#   --target-samples=DIR     path to samples directory on target
-#   --tempprefix=PATH        force fixed dir/prefix instead of mktemp for checks
-#   --toolchain=NAME         set tool defaults according to NAME
-#                            (gcc-asan, clang-asan, gcc-msan, clang-msan,
-#                            gcc-tsan, clang-tsan, gcc-usan, clang-usan,
-#                            valgrind-massif, valgrind-memcheck,
-#                            msvc, icl, gcov, llvm-cov, hardened)
-#   --nm=NM                  use nm tool NM [$nm_default]
-#   --ar=AR                  use archive tool AR [$ar_default]
-#   --as=AS                  use assembler AS [$as_default]
-#   --ln_s=LN_S              use symbolic link tool LN_S [$ln_s_default]
-#   --strip=STRIP            use strip tool STRIP [$strip_default]
-#   --windres=WINDRES        use windows resource compiler WINDRES [$windres_default]
-#   --x86asmexe=EXE          use nasm-compatible assembler EXE [$x86asmexe_default]
-#   --cc=CC                  use C compiler CC [$cc_default]
-#   --cxx=CXX                use C compiler CXX [$cxx_default]
-#   --objcc=OCC              use ObjC compiler OCC [$cc_default]
-#   --dep-cc=DEPCC           use dependency generator DEPCC [$cc_default]
-#   --nvcc=NVCC              use Nvidia CUDA compiler NVCC or clang [$nvcc_default]
-#   --ld=LD                  use linker LD [$ld_default]
-#   --pkg-config=PKGCONFIG   use pkg-config tool PKGCONFIG [$pkg_config_default]
-#   --pkg-config-flags=FLAGS pass additional flags to pkgconf []
-#   --ranlib=RANLIB          use ranlib RANLIB [$ranlib_default]
-#   --doxygen=DOXYGEN        use DOXYGEN to generate API doc [$doxygen_default]
-#   --host-cc=HOSTCC         use host C compiler HOSTCC
-#   --host-cflags=HCFLAGS    use HCFLAGS when compiling for host
-#   --host-cppflags=HCPPFLAGS use HCPPFLAGS when compiling for host
-#   --host-ld=HOSTLD         use host linker HOSTLD
-#   --host-ldflags=HLDFLAGS  use HLDFLAGS when linking for host
-#   --host-extralibs=HLIBS   use libs HLIBS when linking for host
-#   --host-os=OS             compiler host OS [$target_os]
-#   --extra-cflags=ECFLAGS   add ECFLAGS to CFLAGS [$CFLAGS]
-#   --extra-cxxflags=ECFLAGS add ECFLAGS to CXXFLAGS [$CXXFLAGS]
-#   --extra-objcflags=FLAGS  add FLAGS to OBJCFLAGS [$CFLAGS]
-#   --extra-ldflags=ELDFLAGS add ELDFLAGS to LDFLAGS [$LDFLAGS]
-#   --extra-ldexeflags=ELDFLAGS add ELDFLAGS to LDEXEFLAGS [$LDEXEFLAGS]
-#   --extra-ldsoflags=ELDFLAGS add ELDFLAGS to LDSOFLAGS [$LDSOFLAGS]
-#   --extra-libs=ELIBS       add ELIBS [$ELIBS]
-#   --extra-version=STRING   version string suffix []
-#   --optflags=OPTFLAGS      override optimization-related compiler flags
-#   --nvccflags=NVCCFLAGS    override nvcc flags [$nvccflags_default]
-#   --build-suffix=SUFFIX    library name suffix []
-#   --enable-pic             build position-independent code
-#   --enable-thumb           compile for Thumb instruction set
-#   --enable-lto             use link-time optimization
-#   --env="ENV=override"     override the environment variables
+    group_tool.add_argument('--arch'                , action='store'     , metavar='ARCH'        , help='select architecture [$arch]')
+    group_tool.add_argument('--cpu'                 , action='store'     , metavar='CPU'         , help='select the minimum required CPU (affects instruction selection, may crash on older CPUs)')
+    group_tool.add_argument('--cross-prefix'        , action='store'     , metavar='PREFIX'      , help='use PREFIX for compilation tools [$cross_prefix]')
+    group_tool.add_argument('--progs-suffix'        , action='store'     , metavar='SUFFIX'      , help='program name suffix []')
+    group_tool.add_argument('--enable-cross-compile', action='store_true',                         help='assume a cross-compiler is used')
+    group_tool.add_argument('--sysroot'             , action='store'     , metavar='PATH'        , help='root of cross-build tree')
+    group_tool.add_argument('--sysinclude'          , action='store'     , metavar='PATH'        , help='location of cross-build system headers')
+    group_tool.add_argument('--target-os'           , action='store'     , metavar='OS'          , help='compiler targets OS [$target_os]')
+    group_tool.add_argument('--target-exec'         , action='store'     , metavar='CMD'         , help='command to run executables on target')
+    group_tool.add_argument('--target-path'         , action='store'     , metavar='DIR'         , help='path to view of build directory on target')
+    group_tool.add_argument('--target-samples'      , action='store'     , metavar='DIR'         , help='path to samples directory on target')
+    group_tool.add_argument('--tempprefix'          , action='store'     , metavar='PATH'        , help='force fixed dir/prefix instead of mktemp for checks')
+    group_tool.add_argument('--toolchain'           , action='store'     , metavar='NAME'        , help='set tool defaults according to NAME (gcc-asan, clang-asan, gcc-msan, clang-msan, gcc-tsan, clang-tsan, gcc-usan, clang-usan, valgrind-massif, valgrind-memcheck, msvc, icl, gcov, llvm-cov, hardened)')
+    group_tool.add_argument('--nm'                  , action='store'     , metavar='NM'          , help='use nm tool NM [$nm_default]')
+    group_tool.add_argument('--ar'                  , action='store'     , metavar='AR'          , help='use archive tool AR [$ar_default]')
+    group_tool.add_argument('--as'                  , action='store'     , metavar='AS'          , help='use assembler AS [$as_default]')
+    group_tool.add_argument('--ln_s'                , action='store'     , metavar='LN_S'        , help='use symbolic link tool LN_S [$ln_s_default]')
+    group_tool.add_argument('--strip'               , action='store'     , metavar='STRIP'       , help='use strip tool STRIP [$strip_default]')
+    group_tool.add_argument('--windres'             , action='store'     , metavar='WINDRES'     , help='use windows resource compiler WINDRES [$windres_default]')
+    group_tool.add_argument('--x86asmexe'           , action='store'     , metavar='EXE'         , help='use nasm-compatible assembler EXE [$x86asmexe_default]')
+    group_tool.add_argument('--cc'                  , action='store'     , metavar='CC'          , help='use C compiler CC [$cc_default]')
+    group_tool.add_argument('--cxx'                 , action='store'     , metavar='CXX'         , help='use C compiler CXX [$cxx_default]')
+    group_tool.add_argument('--objcc'               , action='store'     , metavar='OCC'         , help='use ObjC compiler OCC [$cc_default]')
+    group_tool.add_argument('--dep-cc'              , action='store'     , metavar='DEPCC'       , help='use dependency generator DEPCC [$cc_default]')
+    group_tool.add_argument('--nvcc'                , action='store'     , metavar='NVCC'        , help='use Nvidia CUDA compiler NVCC or clang [$nvcc_default]')
+    group_tool.add_argument('--ld'                  , action='store'     , metavar='LD'          , help='use linker LD [$ld_default]')
+    group_tool.add_argument('--pkg-config'          , action='store'     , metavar='PKGCONFIG'   , help='use pkg-config tool PKGCONFIG [$pkg_config_default]')
+    group_tool.add_argument('--pkg-config-flags'    , action='store'     , metavar='FLAGS'       , help='pass additional flags to pkgconf []')
+    group_tool.add_argument('--ranlib'              , action='store'     , metavar='RANLIB'      , help='use ranlib RANLIB [$ranlib_default]')
+    group_tool.add_argument('--doxygen'             , action='store'     , metavar='DOXYGEN'     , help='use DOXYGEN to generate API doc [$doxygen_default]')
+    group_tool.add_argument('--host-cc'             , action='store'     , metavar='HOSTCC'      , help='use host C compiler HOSTCC')
+    group_tool.add_argument('--host-cflags'         , action='store'     , metavar='HCFLAGS'     , help='use HCFLAGS when compiling for host')
+    group_tool.add_argument('--host-cppflags'       , action='store'     , metavar='HCPPFLAGS'   , help='use HCPPFLAGS when compiling for host')
+    group_tool.add_argument('--host-ld'             , action='store'     , metavar='HOSTLD'      , help='use host linker HOSTLD')
+    group_tool.add_argument('--host-ldflags'        , action='store'     , metavar='HLDFLAGS'    , help='use HLDFLAGS when linking for host')
+    group_tool.add_argument('--host-extralibs'      , action='store'     , metavar='HLIBS'       , help='use libs HLIBS when linking for host')
+    group_tool.add_argument('--host-os'             , action='store'     , metavar='OS'          , help='compiler host OS [$target_os]')
+    group_tool.add_argument('--extra-cflags'        , action='store'     , metavar='ECFLAGS'     , help='add ECFLAGS to CFLAGS [$CFLAGS]')
+    group_tool.add_argument('--extra-cxxflags'      , action='store'     , metavar='ECFLAGS'     , help='add ECFLAGS to CXXFLAGS [$CXXFLAGS]')
+    group_tool.add_argument('--extra-objcflags'     , action='store'     , metavar='FLAGS'       , help='add FLAGS to OBJCFLAGS [$CFLAGS]')
+    group_tool.add_argument('--extra-ldflags'       , action='store'     , metavar='ELDFLAGS'    , help='add ELDFLAGS to LDFLAGS [$LDFLAGS]')
+    group_tool.add_argument('--extra-ldexeflags'    , action='store'     , metavar='ELDFLAGS'    , help='add ELDFLAGS to LDEXEFLAGS [$LDEXEFLAGS]')
+    group_tool.add_argument('--extra-ldsoflags'     , action='store'     , metavar='ELDFLAGS'    , help='add ELDFLAGS to LDSOFLAGS [$LDSOFLAGS]')
+    group_tool.add_argument('--extra-libs'          , action='store'     , metavar='ELIBS'       , help='add ELIBS [$ELIBS]')
+    group_tool.add_argument('--extra-version'       , action='store'     , metavar='STRING'      , help='version string suffix []')
+    group_tool.add_argument('--optflags'            , action='store'     , metavar='OPTFLAGS'    , help='override optimization-related compiler flags')
+    group_tool.add_argument('--nvccflags'           , action='store'     , metavar='NVCCFLAGS'   , help='override nvcc flags [$nvccflags_default]')
+    group_tool.add_argument('--build-suffix'        , action='store'     , metavar='SUFFIX'      , help='library name suffix []')
+    group_tool.add_argument('--enable-pic'          , action='store_true',                         help='build position-independent code')
+    group_tool.add_argument('--enable-thumb'        , action='store_true',                         help='compile for Thumb instruction set')
+    group_tool.add_argument('--enable-lto'          , action='store_true',                         help='use link-time optimization')
+    group_tool.add_argument('--env'                 , action='store'     , metavar='ENV=override', help='override the environment variables')
 
     group_adv = parser.add_argument_group(title='Advanced options (experts only)')
-#   --malloc-prefix=PREFIX   prefix malloc and related names with PREFIX
-#   --custom-allocator=NAME  use a supported custom allocator
-#   --disable-symver         disable symbol versioning
-#   --enable-hardcoded-tables use hardcoded tables instead of runtime generation
-#   --disable-safe-bitstream-reader
-#                            disable buffer boundary checking in bitreaders
-#                            (faster, but may crash)
-#   --sws-max-filter-size=N  the max filter size swscale uses [$sws_max_filter_size_default]
+    group_adv.add_argument('--malloc-prefix'                , action='store'     , metavar='PREFIX', help='prefix malloc and related names with PREFIX')
+    group_adv.add_argument('--custom-allocator'             , action='store'     , metavar='NAME'  , help='use a supported custom allocator')
+    group_adv.add_argument('--disable-symver'               , action='store_true',                   help='disable symbol versioning')
+    group_adv.add_argument('--enable-hardcoded-tables'      , action='store_true',                   help='use hardcoded tables instead of runtime generation')
+    group_adv.add_argument('--disable-safe-bitstream-reader', action='store_true',                   help='disable buffer boundary checking in bitreaders (faster, but may crash)')
+    group_adv.add_argument('--sws-max-filter-size'          , action='store'     , metavar='N'     , help='the max filter size swscale uses [$sws_max_filter_size_default]')
 
     group_optz = parser.add_argument_group(title='Optimization options (experts only)')
-#   --disable-asm            disable all assembly optimizations
-#   --disable-altivec        disable AltiVec optimizations
-#   --disable-vsx            disable VSX optimizations
-#   --disable-power8         disable POWER8 optimizations
-#   --disable-amd3dnow       disable 3DNow! optimizations
-#   --disable-amd3dnowext    disable 3DNow! extended optimizations
-#   --disable-mmx            disable MMX optimizations
-#   --disable-mmxext         disable MMXEXT optimizations
-#   --disable-sse            disable SSE optimizations
-#   --disable-sse2           disable SSE2 optimizations
-#   --disable-sse3           disable SSE3 optimizations
-#   --disable-ssse3          disable SSSE3 optimizations
-#   --disable-sse4           disable SSE4 optimizations
-#   --disable-sse42          disable SSE4.2 optimizations
-#   --disable-avx            disable AVX optimizations
-#   --disable-xop            disable XOP optimizations
-#   --disable-fma3           disable FMA3 optimizations
-#   --disable-fma4           disable FMA4 optimizations
-#   --disable-avx2           disable AVX2 optimizations
-#   --disable-avx512         disable AVX-512 optimizations
-#   --disable-aesni          disable AESNI optimizations
-#   --disable-armv5te        disable armv5te optimizations
-#   --disable-armv6          disable armv6 optimizations
-#   --disable-armv6t2        disable armv6t2 optimizations
-#   --disable-vfp            disable VFP optimizations
-#   --disable-neon           disable NEON optimizations
-#   --disable-inline-asm     disable use of inline assembly
-#   --disable-x86asm         disable use of standalone x86 assembly
-#   --disable-mipsdsp        disable MIPS DSP ASE R1 optimizations
-#   --disable-mipsdspr2      disable MIPS DSP ASE R2 optimizations
-#   --disable-msa            disable MSA optimizations
-#   --disable-msa2           disable MSA2 optimizations
-#   --disable-mipsfpu        disable floating point MIPS optimizations
-#   --disable-mmi            disable Loongson SIMD optimizations
-#   --disable-fast-unaligned consider unaligned accesses slow
+    group_optz.add_argument('--disable-asm'           , action='store_true', help='disable all assembly optimizations')
+    group_optz.add_argument('--disable-altivec'       , action='store_true', help='disable AltiVec optimizations')
+    group_optz.add_argument('--disable-vsx'           , action='store_true', help='disable VSX optimizations')
+    group_optz.add_argument('--disable-power8'        , action='store_true', help='disable POWER8 optimizations')
+    group_optz.add_argument('--disable-amd3dnow'      , action='store_true', help='disable 3DNow! optimizations')
+    group_optz.add_argument('--disable-amd3dnowext'   , action='store_true', help='disable 3DNow! extended optimizations')
+    group_optz.add_argument('--disable-mmx'           , action='store_true', help='disable MMX optimizations')
+    group_optz.add_argument('--disable-mmxext'        , action='store_true', help='disable MMXEXT optimizations')
+    group_optz.add_argument('--disable-sse'           , action='store_true', help='disable SSE optimizations')
+    group_optz.add_argument('--disable-sse2'          , action='store_true', help='disable SSE2 optimizations')
+    group_optz.add_argument('--disable-sse3'          , action='store_true', help='disable SSE3 optimizations')
+    group_optz.add_argument('--disable-ssse3'         , action='store_true', help='disable SSSE3 optimizations')
+    group_optz.add_argument('--disable-sse4'          , action='store_true', help='disable SSE4 optimizations')
+    group_optz.add_argument('--disable-sse42'         , action='store_true', help='disable SSE4.2 optimizations')
+    group_optz.add_argument('--disable-avx'           , action='store_true', help='disable AVX optimizations')
+    group_optz.add_argument('--disable-xop'           , action='store_true', help='disable XOP optimizations')
+    group_optz.add_argument('--disable-fma3'          , action='store_true', help='disable FMA3 optimizations')
+    group_optz.add_argument('--disable-fma4'          , action='store_true', help='disable FMA4 optimizations')
+    group_optz.add_argument('--disable-avx2'          , action='store_true', help='disable AVX2 optimizations')
+    group_optz.add_argument('--disable-avx512'        , action='store_true', help='disable AVX-512 optimizations')
+    group_optz.add_argument('--disable-aesni'         , action='store_true', help='disable AESNI optimizations')
+    group_optz.add_argument('--disable-armv5te'       , action='store_true', help='disable armv5te optimizations')
+    group_optz.add_argument('--disable-armv6'         , action='store_true', help='disable armv6 optimizations')
+    group_optz.add_argument('--disable-armv6t2'       , action='store_true', help='disable armv6t2 optimizations')
+    group_optz.add_argument('--disable-vfp'           , action='store_true', help='disable VFP optimizations')
+    group_optz.add_argument('--disable-neon'          , action='store_true', help='disable NEON optimizations')
+    group_optz.add_argument('--disable-inline-asm'    , action='store_true', help='disable use of inline assembly')
+    group_optz.add_argument('--disable-x86asm'        , action='store_true', help='disable use of standalone x86 assembly')
+    group_optz.add_argument('--disable-mipsdsp'       , action='store_true', help='disable MIPS DSP ASE R1 optimizations')
+    group_optz.add_argument('--disable-mipsdspr2'     , action='store_true', help='disable MIPS DSP ASE R2 optimizations')
+    group_optz.add_argument('--disable-msa'           , action='store_true', help='disable MSA optimizations')
+    group_optz.add_argument('--disable-msa2'          , action='store_true', help='disable MSA2 optimizations')
+    group_optz.add_argument('--disable-mipsfpu'       , action='store_true', help='disable floating point MIPS optimizations')
+    group_optz.add_argument('--disable-mmi'           , action='store_true', help='disable Loongson SIMD optimizations')
+    group_optz.add_argument('--disable-fast-unaligned', action='store_true', help='consider unaligned accesses slow')
 
     group_dev = parser.add_argument_group(title='Developer options (useful when working on FFmpeg itself)')
-#   --disable-debug          disable debugging symbols
-#   --enable-debug=LEVEL     set the debug level [$debuglevel]
-#   --disable-optimizations  disable compiler optimizations
-#   --enable-extra-warnings  enable more compiler warnings
-#   --disable-stripping      disable stripping of executables and shared libraries
-#   --assert-level=level     0(default), 1 or 2, amount of assertion testing,
-#                            2 causes a slowdown at runtime.
-#   --enable-memory-poisoning fill heap uninitialized allocated space with arbitrary data
-#   --valgrind=VALGRIND      run "make fate" tests through valgrind to detect memory
-#                            leaks and errors, using the specified valgrind binary.
-#                            Cannot be combined with --target-exec
-#   --enable-ftrapv          Trap arithmetic overflows
-#   --samples=PATH           location of test samples for FATE, if not set use
-#                            \$FATE_SAMPLES at make invocation time.
-#   --enable-neon-clobber-test check NEON registers for clobbering (should be
-#                            used only for debugging purposes)
-#   --enable-xmm-clobber-test check XMM registers for clobbering (Win64-only;
-#                            should be used only for debugging purposes)
-#   --enable-random          randomly enable/disable components
-#   --disable-random
-#   --enable-random=LIST     randomly enable/disable specific components or
-#   --disable-random=LIST    component groups. LIST is a comma-separated list
-#                            of NAME[:PROB] entries where NAME is a component
-#                            (group) and PROB the probability associated with
-#                            NAME (default 0.5).
-#   --random-seed=VALUE      seed value for --enable/disable-random
-#   --disable-valgrind-backtrace do not print a backtrace under Valgrind
-#                            (only applies to --disable-optimizations builds)
-#   --enable-ossfuzz         Enable building fuzzer tool
-#   --libfuzzer=PATH         path to libfuzzer
-#   --ignore-tests=TESTS     comma-separated list (without "fate-" prefix
-#                            in the name) of tests whose result is ignored
-#   --enable-linux-perf      enable Linux Performance Monitor API
+    group_dev.add_argument('--disable-debug'             , action='store_true',                     help='disable debugging symbols')
+    group_dev.add_argument('--enable-debug'              , action='store'     , metavar='LEVEL'   , help='set the debug level [$debuglevel]')
+    group_dev.add_argument('--disable-optimizations'     , action='store_true',                     help='disable compiler optimizations')
+    group_dev.add_argument('--enable-extra-warnings'     , action='store_true',                     help='enable more compiler warnings')
+    group_dev.add_argument('--disable-stripping'         , action='store_true',                     help='disable stripping of executables and shared libraries')
+    group_dev.add_argument('--assert-level'              , action='store'     , metavar='level'   , help='0(default), 1 or 2, amount of assertion testing, 2 causes a slowdown at runtime.')
+    group_dev.add_argument('--enable-memory-poisoning'   , action='store_true',                     help='fill heap uninitialized allocated space with arbitrary data')
+    group_dev.add_argument('--valgrind'                  , action='store'     , metavar='VALGRIND', help='run "make fate" tests through valgrind to detect memory leaks and errors, using the specified valgrind binary. Cannot be combined with --target-exec')
+    group_dev.add_argument('--enable-ftrapv'             , action='store'     , metavar='PATH'    , help='Trap arithmetic overflows')
+    group_dev.add_argument('--samples'                   , action='store_true',                     help='location of test samples for FATE, if not set use \\$FATE_SAMPLES at make invocation time.')
+    group_dev.add_argument('--enable-neon-clobber-test'  , action='store_true',                     help='check NEON registers for clobbering (should be used only for debugging purposes)')
+    group_dev.add_argument('--enable-xmm-clobber-test'   , action='store_true',                     help='check XMM registers for clobbering (Win64-only; should be used only for debugging purposes)')
+    # group_dev.add_argument('--enable-random'             , action='store_true',                     help='randomly enable components')
+    # group_dev.add_argument('--disable-random'            , action='store_true',                     help='randomly disable components')
+    group_dev.add_argument('--enable-random'             , action='store'     , metavar='LIST' ,    help='randomly enable specific components or component groups. LIST is a comma-separated list of NAME[:PROB] entries where NAME is a component (group) and PROB the probability associated with NAME (default 0.5).')
+    group_dev.add_argument('--disable-random'            , action='store'     , metavar='LIST' ,    help='randomly disable specific components or component groups. LIST is a comma-separated list of NAME[:PROB] entries where NAME is a component (group) and PROB the probability associated with NAME (default 0.5).')
+    group_dev.add_argument('--random-seed'               , action='store'     , metavar='VALUE',    help='seed value for --enable/disable-random')
+    group_dev.add_argument('--disable-valgrind-backtrace', action='store_true',                     help='do not print a backtrace under Valgrind (only applies to --disable-optimizations builds)')
+    group_dev.add_argument('--enable-ossfuzz'            , action='store_true',                     help='Enable building fuzzer tool')
+    group_dev.add_argument('--libfuzzer'                 , action='store'     , metavar='PATH' ,    help='path to libfuzzer')
+    group_dev.add_argument('--ignore-tests'              , action='store'     , metavar='TESTS',    help='comma-separated list (without "fate-" prefix in the name) of tests whose result is ignored')
+    group_dev.add_argument('--enable-linux-perf'         , action='store_true',                     help='enable Linux Performance Monitor API')
 
     args = parser.parse_args()
     if args.help:
