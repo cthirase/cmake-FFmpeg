@@ -437,6 +437,7 @@ themselves, not all their features will necessarily be usable by FFmpeg.
     args = parser.parse_args()
     if args.help:
         parser.print_help()
+        sys.exit(0)
 
 # if test -t 1 && which tput >/dev/null 2>&1; then
 #     ncolors=$(tput colors)
