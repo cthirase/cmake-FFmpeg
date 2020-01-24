@@ -58,7 +58,7 @@ def cmake_gen(cparam: CmakeTaskParam):
     return True
 
 def cmake_build(cparam: CmakeTaskParam):
-    pg = ['cmake', '--build', cparam.make_dir]
+    pg = ['cmake', '--build', cparam.make_dir, '-j']
     if cparam.opt.verbose:
         pg.append('-v')
 
